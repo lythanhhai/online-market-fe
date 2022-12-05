@@ -1,3 +1,3 @@
-const baseUrl = "https://score-manager-be.herokuapp.com/api/";
+const baseUrl = "http://143.198.208.97:4000/api/";
 
 export default baseUrl;

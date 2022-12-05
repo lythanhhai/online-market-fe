@@ -7,11 +7,11 @@ import Sidebar from "./Sidebar";
 function Header() {
   return (
     <nav
-      class="navbar navbar-expand-lg navbar-light bg-white w-100 navigation"
+      class="navbar navbar-expand-lg navbar-light bg-white w-100 navigation fixed-top"
       id="navbar"
     >
       <div class="container">
-        <Link class="navbar-brand font-weight-bold" to={{ pathname: "/" }}>
+        <Link class="navbar-brand font-weight-bold" to={{ pathname: "/home" }}>
           Online-market
         </Link>
         <button
@@ -44,10 +44,30 @@ function Header() {
             </a>
             <ModalCart />
           </li>
-          <li class="list-inline-item">
-            <a href="#">
+          <li class="dropdown cart-nav dropdown-slide list-inline-item">
+            <a
+              href="#"
+              class="dropdown-toggle cart-icon"
+              data-toggle="dropdown"
+              data-hover="dropdown"
+            >
               <i class="tf-ion-ios-person mr-3"></i>
             </a>
+            <div
+              className="dropdown-menu cart-dropdown"
+              style={{
+                width: "100px !important",
+              }}
+            >
+              <a
+                href="#"
+                style={{
+                  width: "100px !important",
+                }}
+              >
+                aaaa
+              </a>
+            </div>
           </li>
         </ul>
       </div>

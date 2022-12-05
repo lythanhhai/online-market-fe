@@ -23,6 +23,7 @@ function App() {
               <Route path="/cart" element={<Cart />} />
             </Route>
             <Route path="/" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
             {/* <Route path="/shop" element={<Shop />} /> */}
             <Route path="/single-product" element={<SingleProduct />} />
             <Route path="/profile" element={<ProfilePage />} />
