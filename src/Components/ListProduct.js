@@ -1,6 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ListProduct() {
+  const [listProduct, setListProduct] = useState([1, 2, 3, 1, 2, 3, 1, 2, 3]);
+  const elemListProduct = listProduct.map((item, index) => {
+    return (
+      <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
+        <div class="product">
+          <div class="product-wrap">
+            <a href="/product-single">
+              <img
+                class="img-fluid w-100 mb-3 img-first"
+                src="assets/images/322.jpg"
+                alt="product-img"
+              />
+            </a>
+            <a href="/product-single">
+              <img
+                class="img-fluid w-100 mb-3 img-second"
+                src="assets/images/444.jpg"
+                alt="product-img"
+              />
+            </a>
+          </div>
+
+          <span class="onsale">Sale</span>
+          <div class="product-hover-overlay">
+            <a href="#">
+              <i class="tf-ion-android-cart"></i>
+            </a>
+            <a href="#">
+              <i class="tf-ion-ios-heart"></i>
+            </a>
+          </div>
+
+          <div class="product-info">
+            <h2 class="product-title h5 mb-0">
+              <a href="/product-single">Floral Kirby</a>
+            </h2>
+            <span class="price">$329.10</span>
+          </div>
+        </div>
+      </div>
+    );
+  });
+
   return (
     <section class="products-shop section">
       <div class="container">
@@ -34,232 +77,8 @@ function ListProduct() {
                 </div>
               </div>
             </div>
-
             <div class="row">
-              <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
-                <div class="product">
-                  <div class="product-wrap">
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-first"
-                        src="assets/images/322.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-second"
-                        src="assets/images/444.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                  </div>
-
-                  <span class="onsale">Sale</span>
-                  <div class="product-hover-overlay">
-                    <a href="#">
-                      <i class="tf-ion-android-cart"></i>
-                    </a>
-                    <a href="#">
-                      <i class="tf-ion-ios-heart"></i>
-                    </a>
-                  </div>
-
-                  <div class="product-info">
-                    <h2 class="product-title h5 mb-0">
-                      <a href="/product-single">Floral Kirby</a>
-                    </h2>
-                    <span class="price">$329.10</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
-                <div class="product">
-                  <div class="product-wrap">
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-first"
-                        src="assets/images/111.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-second"
-                        src="assets/images/444.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                  </div>
-
-                  <div class="product-hover-overlay">
-                    <a href="#">
-                      <i class="tf-ion-android-cart"></i>
-                    </a>
-                    <a href="#">
-                      <i class="tf-ion-ios-heart"></i>
-                    </a>
-                  </div>
-
-                  <div class="product-info">
-                    <h2 class="product-title h5 mb-0">
-                      <a href="/product-single">Open knit switer</a>
-                    </h2>
-                    <span class="price">$29.10</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
-                <div class="product">
-                  <div class="product-wrap">
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-first"
-                        src="assets/images/222.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-second"
-                        src="assets/images/322.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                  </div>
-
-                  <span class="onsale">Sale</span>
-                  <div class="product-hover-overlay">
-                    <a href="#">
-                      <i class="tf-ion-android-cart"></i>
-                    </a>
-                    <a href="#">
-                      <i class="tf-ion-ios-heart"></i>
-                    </a>
-                  </div>
-
-                  <div class="product-info">
-                    <h2 class="product-title h5 mb-0">
-                      <a href="/product-single">Official trendy</a>
-                    </h2>
-                    <span class="price">$350.00 – $355.00</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
-                <div class="product">
-                  <div class="product-wrap">
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-first"
-                        src="assets/images/322.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-second"
-                        src="assets/images/111.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                  </div>
-
-                  <div class="product-hover-overlay">
-                    <a href="#">
-                      <i class="tf-ion-android-cart"></i>
-                    </a>
-                    <a href="#">
-                      <i class="tf-ion-ios-heart"></i>
-                    </a>
-                  </div>
-
-                  <div class="product-info">
-                    <h2 class="product-title h5 mb-0">
-                      <a href="/product-single">Frock short</a>
-                    </h2>
-                    <span class="price">$249</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
-                <div class="product">
-                  <div class="product-wrap">
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-first"
-                        src="assets/images/444.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-second"
-                        src="assets/images/222.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                  </div>
-
-                  <div class="product-hover-overlay">
-                    <a href="#">
-                      <i class="tf-ion-android-cart"></i>
-                    </a>
-                    <a href="#">
-                      <i class="tf-ion-ios-heart"></i>
-                    </a>
-                  </div>
-
-                  <div class="product-info">
-                    <h2 class="product-title h5 mb-0">
-                      <a href="/product-single">Sleeve dress</a>
-                    </h2>
-                    <span class="price">$59.10</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
-                <div class="product">
-                  <div class="product-wrap">
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-first"
-                        src="assets/images/322.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                    <a href="/product-single">
-                      <img
-                        class="img-fluid w-100 mb-3 img-second"
-                        src="assets/images/222.jpg"
-                        alt="product-img"
-                      />
-                    </a>
-                  </div>
-
-                  <div class="product-hover-overlay">
-                    <a href="#">
-                      <i class="tf-ion-android-cart"></i>
-                    </a>
-                    <a href="#">
-                      <i class="tf-ion-ios-heart"></i>
-                    </a>
-                  </div>
-
-                  <div class="product-info">
-                    <h2 class="product-title h5 mb-0">
-                      <a href="/product-single">Stylish dress</a>
-                    </h2>
-                    <span class="price">$99.00</span>
-                  </div>
-                </div>
-              </div>
-
+              {elemListProduct}
               <div class="col-12">
                 <nav aria-label="Page navigation">
                   <ul class="pagination">

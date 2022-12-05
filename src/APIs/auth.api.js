@@ -1,8 +1,13 @@
 import axios from "axios";
-import { setLocalStorage, STORAGE, removeLocalStorage } from "Utils/storage";
+import {
+  setLocalStorage,
+  STORAGE,
+  removeLocalStorage,
+  getLocalStorage,
+} from "../Utils/storage";
 import baseUrl from "./config";
 
-function login(Data) {
+function login(Data, navigate, setErr) {
   axios({
     method: "post",
     url: `${baseUrl}auth/login`,
@@ -10,45 +15,80 @@ function login(Data) {
   })
     .then((res) => res.data)
     .then((data) => {
-      setLocalStorage(STORAGE.USER_DATA, JSON.stringify(data));
-      setLocalStorage(STORAGE.USER_TOKEN, data.accessToken);
-      window.location.reload();
+      if (data.message) {
+        setErr(data.message);
+      } else {
+        setLocalStorage(STORAGE.USER_DATA, JSON.stringify(data));
+        setLocalStorage(STORAGE.USER_TOKEN, data.accessToken);
+        setLocalStorage("EXPIRE", JSON.stringify(new Date()));
+        navigate("/home");
+      }
     })
     .catch((err) => {
+      setErr(err);
       console.log(err);
     });
 }
 
-function register(Data) {
+function register(Data, navigate, setErr) {
   axios({
     method: "post",
-    url: `${baseUrl}auth/create-teacher`,
+    url: `${baseUrl}auth/register`,
     data: Data,
   })
     .then((res) => res.data)
     .then((data) => {
       setLocalStorage(STORAGE.USER_DATA, JSON.stringify(data));
       setLocalStorage(STORAGE.USER_TOKEN, data.accessToken);
-      window.location.reload();
+      setLocalStorage("EXPIRE", JSON.stringify(new Date()));
+      navigate("/home");
+      console.log(data);
     })
     .catch((err) => {
-      console.warn(err);
+      setErr(err);
+      console.log(err);
     });
 }
 
-function logout() {
+function logout(navigate) {
+  // console.log(getLocalStorage(STORAGE.USER_TOKEN).split(".")[2]);
   axios({
     method: "post",
     url: `${baseUrl}auth/logout`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
   })
-    .then(() => {
+    .then((res) => {
+      return res.data;
+    })
+    .then((data) => {
       removeLocalStorage(STORAGE.USER_DATA);
       removeLocalStorage(STORAGE.USER_TOKEN);
-      window.location.reload();
+      removeLocalStorage("EXPIRE");
+      navigate("/authentication/sign-in");
     })
     .catch((err) => {
-      console.warn(err);
+      console.log(err);
     });
 }
 
-export { login, register, logout };
+function currentUser() {
+  axios({
+    method: "get",
+    url: `${baseUrl}auth/current`,
+    headers: {
+      authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+      "content-type": "application/json",
+    },
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+export { login, register, logout, currentUser };
