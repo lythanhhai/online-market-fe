@@ -1,20 +1,87 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  getAllCategory,
+  getAllProduct,
+  searchProductByCategory,
+} from "../APIs/product.api";
 
 function ListProduct() {
-  const [listProduct, setListProduct] = useState([1, 2, 3, 1, 2, 3, 1, 2, 3]);
-  const elemListProduct = listProduct.map((item, index) => {
+  const itemEachPage = 6;
+  // const [listProduct, setListProduct] = useState([
+  //   1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7,
+  // ]);
+  const [listProduct, setListProduct] = useState([]);
+  const [numberPage, setNumberPage] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [listEachProductPage, setListEachProductPage] = useState([]);
+  const [listCategory, setListCategory] = useState([]);
+  const [typeCategory, setTypeCategory] = useState(0);
+  // useEffect(() => {
+  //   getAllProduct(setListProduct);
+  //   getAllCategory(setListCategory);
+  // }, []);
+
+  useEffect(() => {
+    if (typeCategory === 0) {
+      getAllProduct(setListProduct);
+      getAllCategory(setListCategory);
+    } else {
+      searchProductByCategory(typeCategory, setListProduct);
+    }
+  }, [typeCategory]);
+
+  useEffect(() => {
+    let arr = [];
+    let arr1 = [];
+    for (let i = 1; i <= Math.ceil(listProduct.length / itemEachPage); i++) {
+      arr.push(i);
+    }
+
+    arr1 = listProduct.slice(
+      (currentPage - 1) * itemEachPage,
+      currentPage * itemEachPage
+    );
+
+    setNumberPage(arr);
+    setListEachProductPage(arr1);
+  }, [listProduct]);
+
+  useEffect(() => {
+    let arr = [];
+    arr = listProduct.slice(
+      (currentPage - 1) * itemEachPage,
+      currentPage * itemEachPage
+    );
+
+    setListEachProductPage(arr);
+  }, [currentPage]);
+  const navigate = useNavigate();
+  const handleClickDetailProduct = () => {
+    navigate("/single-product/1");
+  };
+  const handleAddToCart = () => {};
+  const elemListProduct = listEachProductPage.map((item, index) => {
     return (
-      <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5">
+      <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5" key={index}>
         <div class="product">
           <div class="product-wrap">
-            <a href="/product-single">
+            <a
+              onClick={() => {
+                handleClickDetailProduct();
+              }}
+            >
               <img
                 class="img-fluid w-100 mb-3 img-first"
                 src="assets/images/322.jpg"
                 alt="product-img"
               />
             </a>
-            <a href="/product-single">
+            <a
+              onClick={() => {
+                handleClickDetailProduct();
+              }}
+            >
               <img
                 class="img-fluid w-100 mb-3 img-second"
                 src="assets/images/444.jpg"
@@ -25,25 +92,65 @@ function ListProduct() {
 
           <span class="onsale">Sale</span>
           <div class="product-hover-overlay">
-            <a href="#">
-              <i class="tf-ion-android-cart"></i>
+            <a
+              // href=""
+              onClick={() => {
+                handleAddToCart();
+              }}
+            >
+              <i class="tf-ion-android-cart text-white"></i>
             </a>
-            <a href="#">
+            <a>
               <i class="tf-ion-ios-heart"></i>
             </a>
           </div>
 
           <div class="product-info">
             <h2 class="product-title h5 mb-0">
-              <a href="/product-single">Floral Kirby</a>
+              <a href="/single-product">{item.name}</a>
             </h2>
-            <span class="price">$329.10</span>
+            <span class="price">${item.price}</span>
           </div>
         </div>
       </div>
     );
   });
 
+  const elemPage = numberPage.map((item, index) => {
+    if (currentPage === item) {
+      return (
+        <li
+          class="page-item active"
+          key={index}
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setCurrentPage(item);
+          }}
+        >
+          <a class="page-link">{item}</a>
+        </li>
+      );
+    }
+    return (
+      <li
+        class="page-item"
+        key={index}
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          setCurrentPage(item);
+        }}
+      >
+        <a class="page-link">{item}</a>
+      </li>
+    );
+  });
+  const elemCategory = listCategory.map((item, index) => {
+    return (
+      <option value={item.id} key={item.id}>
+        {item.name}
+      </option>
+    );
+  });
   return (
     <section class="products-shop section">
       <div class="container">
@@ -52,27 +159,62 @@ function ListProduct() {
             <div class="row align-items-center">
               <div class="col-lg-12 mb-4 mb-lg-0">
                 <div class="section-title">
-                  <h2 class="d-block text-left-sm">Shop</h2>
+                  <h2 class="d-block text-left-sm">Products</h2>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div class="heading d-flex justify-content-between mb-5 mr-4">
+                      <p class="result-count mb-0">
+                        {" "}
+                        {/* Showing 1–6 of {listProduct.length} results */}
+                      </p>
+                      <form class="ordering " method="get">
+                        <select
+                          name="orderby"
+                          class="orderby form-control"
+                          aria-label="Shop order"
+                          onChange={(e) => {
+                            // alert(e.target.value);
+                            setTypeCategory(e.target.value);
+                          }}
+                        >
+                          <option value="0" selected="selected">
+                            All Category
+                          </option>
+                          {elemCategory}
+                        </select>
+                        <input type="hidden" name="paged" value="1" />
+                      </form>
+                    </div>
 
-                  <div class="heading d-flex justify-content-between mb-5">
-                    <p class="result-count mb-0"> Showing 1–6 of 17 results</p>
-                    <form class="ordering " method="get">
-                      <select
-                        name="orderby"
-                        class="orderby form-control"
-                        aria-label="Shop order"
-                      >
-                        <option value="" selected="selected">
-                          Default sorting
-                        </option>
-                        <option value="">Sort by popularity</option>
-                        <option value="">Sort by average rating</option>
-                        <option value="">Sort by latest</option>
-                        <option value="">Sort by price: low to high</option>
-                        <option value="">Sort by price: high to low</option>
-                      </select>
-                      <input type="hidden" name="paged" value="1" />
-                    </form>
+                    <div class="heading d-flex justify-content-between mb-5">
+                      <p class="result-count mb-0">
+                        {" "}
+                        {/* Showing 1–6 of {listProduct.length} results */}
+                      </p>
+                      <form class="ordering " method="get">
+                        <select
+                          name="orderby"
+                          class="orderby form-control"
+                          aria-label="Shop order"
+                        >
+                          <option value="" selected="selected">
+                            Default sorting
+                          </option>
+                          <option value="">Sort by popularity</option>
+                          <option value="">Sort by average rating</option>
+                          <option value="">Sort by latest</option>
+                          <option value="">Sort by price: low to high</option>
+                          <option value="">Sort by price: high to low</option>
+                        </select>
+                        <input type="hidden" name="paged" value="1" />
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -82,28 +224,35 @@ function ListProduct() {
               <div class="col-12">
                 <nav aria-label="Page navigation">
                   <ul class="pagination">
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Previous">
+                    <li
+                      class="page-item"
+                      onClick={() => {
+                        if (currentPage === 1) {
+                          setCurrentPage(currentPage);
+                        } else {
+                          setCurrentPage(currentPage - 1);
+                        }
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <a class="page-link" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">
-                        1
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        2
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        3
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
+
+                    {elemPage}
+                    <li
+                      class="page-item"
+                      onClick={() => {
+                        if (currentPage === numberPage.length) {
+                          setCurrentPage(currentPage);
+                        } else {
+                          setCurrentPage(currentPage + 1);
+                        }
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <a class="page-link" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
@@ -248,7 +397,7 @@ function ListProduct() {
 
             <section class="widget widget-popular mb-5">
               <h3 class="widget-title mb-4 h4">Popular Products</h3>
-              <a class="popular-products-item media" href="/product-single">
+              <a class="popular-products-item media" href="/single-product">
                 <img
                   src="assets/images/p-1.jpg"
                   alt=""
@@ -263,7 +412,7 @@ function ListProduct() {
                 </div>
               </a>
 
-              <a class="popular-products-item media" href="/product-single">
+              <a class="popular-products-item media" href="/single-product">
                 <img
                   src="assets/images/p-2.jpg"
                   alt=""
@@ -278,7 +427,7 @@ function ListProduct() {
                 </div>
               </a>
 
-              <a class="popular-products-item media" href="/product-single">
+              <a class="popular-products-item media" href="/single-product">
                 <img
                   src="assets/images/p-3.jpg"
                   alt=""

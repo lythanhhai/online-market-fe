@@ -7,14 +7,21 @@ import {
 } from "../Utils/storage";
 import baseUrl from "./config";
 
-function getItem() {
+function getItem(setListCart) {
   axios({
     method: "get",
     url: `${baseUrl}cart/get-item`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
   })
     .then((res) => res.data)
     .then((data) => {
-      console.log(data);
+      if (data.message) {
+        // setListCart([]);
+      } else {
+        setListCart(data);
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -25,6 +32,9 @@ function getItemById(idItem) {
   axios({
     method: "get",
     url: `${baseUrl}cart/get-item/${idItem}`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
   })
     .then((res) => res.data)
     .then((data) => {
@@ -39,6 +49,9 @@ function getItemOrder(idOrder) {
   axios({
     method: "get",
     url: `${baseUrl}cart/get-item-order/${idOrder}`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
   })
     .then((res) => res.data)
     .then((data) => {
@@ -54,6 +67,9 @@ function addItemToCart(Data) {
     method: "post",
     url: `${baseUrl}cart/add-item`,
     data: Data,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
   })
     .then((res) => res.data)
     .then((data) => {
@@ -72,6 +88,9 @@ function updateItemInCart(Data) {
     method: "put",
     url: `${baseUrl}auth/update-item`,
     data: Data,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
   })
     .then((res) => res.data)
     .then((data) => {
@@ -97,9 +116,8 @@ function deleteItemInCart(idItem) {
     .then((res) => {
       return res.data;
     })
-    .then((data) => data.body)
-    .then((body) => {
-      setData(body);
+    .then((data) => {
+      console.log(data);
     })
     .catch((err) => {
       console.log(err);

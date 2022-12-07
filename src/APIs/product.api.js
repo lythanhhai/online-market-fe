@@ -7,25 +7,33 @@ import {
 } from "../Utils/storage";
 import baseUrl from "./config";
 
-function getProduct(Data, navigate, setErr) {
+function getAllProduct(setListProduct) {
   axios({
     method: "get",
-    url: `${baseUrl}auth/login`,
-    data: Data,
+    url: `${baseUrl}product/get-all-product`,
   })
     .then((res) => res.data)
     .then((data) => {
-      if (data.message) {
-        setErr(data.message);
-      } else {
-        setLocalStorage(STORAGE.USER_DATA, JSON.stringify(data));
-        setLocalStorage(STORAGE.USER_TOKEN, data.accessToken);
-        setLocalStorage("EXPIRE", JSON.stringify(new Date()));
-        navigate("/home");
-      }
+      return data.body;
+    })
+    .then((body) => {
+      setListProduct(body);
     })
     .catch((err) => {
-      setErr(err);
+      console.log(err);
+    });
+}
+
+function getAllCategory(setListCategory) {
+  axios({
+    method: "get",
+    url: `${baseUrl}product/get-all-category`,
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      setListCategory(data);
+    })
+    .catch((err) => {
       console.log(err);
     });
 }
@@ -33,7 +41,7 @@ function getProduct(Data, navigate, setErr) {
 function searchProductByKeyword(keyword, setData) {
   axios({
     method: "get",
-    url: `${baseUrl}auth/search-product/${keyword}`,
+    url: `${baseUrl}product/search-product/${keyword}`,
   })
     .then((res) => res.data)
     .then((data) => {
@@ -52,10 +60,10 @@ function searchProductByCategory(idCategory, setData) {
   // console.log(getLocalStorage(STORAGE.USER_TOKEN).split(".")[2]);
   axios({
     method: "get",
-    url: `${baseUrl}auth/search-product-by-category-id/${idCategory}`,
-    headers: {
-      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
-    },
+    url: `${baseUrl}product/search-product-by-category-id/${idCategory}`,
+    // headers: {
+    //   Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    // },
   })
     .then((res) => {
       return res.data;
@@ -69,4 +77,9 @@ function searchProductByCategory(idCategory, setData) {
     });
 }
 
-export { getProduct, searchProductByCategory, searchProductByKeyword };
+export {
+  getAllProduct,
+  searchProductByCategory,
+  searchProductByKeyword,
+  getAllCategory,
+};

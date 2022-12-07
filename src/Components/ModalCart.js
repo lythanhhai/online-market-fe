@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { deleteItemInCart } from "../APIs/cart.api";
 
-function ModalCart() {
-  return (
-    <div class="dropdown-menu cart-dropdown">
-      <div class="media">
+function ModalCart({ listCart }) {
+  const handleDeleteItemInCart = (idItem) => {
+    deleteItemInCart(idItem);
+  };
+  const elemItem = listCart.map((item, index) => {
+    return (
+      <div class="media" key={index}>
         <a href="/product-single">
           <img
             class="media-object img- mr-3"
@@ -12,46 +16,43 @@ function ModalCart() {
           />
         </a>
         <div class="media-body">
-          <h6>Ladies Bag</h6>
+          <h6>{item.product.name}</h6>
           <div class="cart-price">
-            <span>1 x</span>
-            <span>1250.00</span>
+            <span>{item.quantity} x</span>
+            <span>{item.product.price}</span>
           </div>
         </div>
-        <a href="#" class="remove">
+        <a
+          class="remove"
+          onClick={() => {
+            handleDeleteItemInCart(item.id);
+          }}
+        >
           <i class="tf-ion-close"></i>
         </a>
       </div>
-
-      <div class="media">
-        <a href="/product-single">
-          <img
-            class="media-object img-fluid mr-3"
-            src="assets/images/cart-2.jpg"
-            alt="image"
-          />
-        </a>
-        <div class="media-body">
-          <h6>Skinny Jeans</h6>
-          <div class="cart-price">
-            <span>1 x</span>
-            <span>1250.00</span>
-          </div>
-        </div>
-        <a href="#" class="remove">
-          <i class="tf-ion-close"></i>
-        </a>
-      </div>
+    );
+  });
+  return (
+    <div class="dropdown-menu cart-dropdown">
+      {listCart.length === 0 ? (
+        <p className="text-center">Your cart currently empty!!!</p>
+      ) : (
+        elemItem
+      )}
       <div class="cart-summary">
-        <span class="h6">Total</span>
-        <span class="total-price h6">$1799.00</span>
+        {listCart.length === 0 ? null : (
+          <div>
+            <span class="h6">Total</span>
+            <span class="total-price h6">$1799.00</span>
+          </div>
+        )}
+
         <div class="text-center cart-buttons mt-3">
-          <a href="#" class="btn btn-small btn-transparent btn-block">
+          <a href="cart" class="btn btn-small btn-transparent btn-block">
             View Cart
           </a>
-          <a href="#" class="btn btn-small btn-main btn-block">
-            Checkout
-          </a>
+          {/* <a class="btn btn-small btn-main btn-block">Checkout</a> */}
         </div>
       </div>
     </div>
