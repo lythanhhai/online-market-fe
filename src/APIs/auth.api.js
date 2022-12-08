@@ -22,6 +22,7 @@ function login(Data, navigate, setErr) {
         setLocalStorage(STORAGE.USER_TOKEN, data.accessToken);
         setLocalStorage("EXPIRE", JSON.stringify(new Date()));
         navigate("/home");
+        window.location.reload(false);
       }
     })
     .catch((err) => {
@@ -66,7 +67,7 @@ function logout(navigate) {
       removeLocalStorage(STORAGE.USER_DATA);
       removeLocalStorage(STORAGE.USER_TOKEN);
       removeLocalStorage("EXPIRE");
-      navigate("/authentication/sign-in");
+      navigate("/login");
     })
     .catch((err) => {
       console.log(err);
