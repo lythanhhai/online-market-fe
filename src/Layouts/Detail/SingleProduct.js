@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getProductById } from "../../APIs/product.api";
 
 function SingleProduct() {
   const params = useParams();
+  const [product, setProduct] = useState({});
   useEffect(() => {
     // alert(params.productId);
+    getProductById(params.productId, setProduct);
   }, []);
   return (
     <div className="single-product-container">
@@ -14,7 +17,7 @@ function SingleProduct() {
           <div class="row justify-content-center">
             <div class="col-lg-6">
               <div class="content text-center">
-                <h1 class="mb-3">Product Single</h1>
+                <h1 class="mb-3">Detail Product</h1>
                 <p>
                   Hath after appear tree great fruitful green dominion moveth
                   sixth abundantly image that midst of god day multiply you’ll
@@ -27,7 +30,7 @@ function SingleProduct() {
                       <a routerLink="/">Home</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                      Product Single
+                      Detail Product
                     </li>
                   </ol>
                 </nav>
@@ -104,7 +107,7 @@ function SingleProduct() {
 
             <div class="col-md-7">
               <div class="single-product-details mt-5 mt-lg-0">
-                <h2>Eclipse Crossbody</h2>
+                <h2>{product.product?.name}</h2>
                 <div class="sku_wrapper mb-4">
                   SKU: <span class="text-muted">AB1563456789 </span>
                 </div>
@@ -112,14 +115,18 @@ function SingleProduct() {
                 <hr />
 
                 <h3 class="product-price">
-                  $300 <del>$119.90</del>
+                  ${product.product?.price}
+                  {/* <del>$119.90</del> */}
                 </h3>
 
-                <p class="product-description my-4 ">
+                {/* <p class="product-description my-4 ">
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Laborum ipsum dicta quod, quia doloremque aut deserunt commodi
                   quis. Totam a consequatur beatae nostrum, earum consequuntur?
                   Eveniet consequatur ipsum dicta recusandae.
+                </p> */}
+                <p class="product-description my-4 ">
+                  {product.product?.description}
                 </p>
 
                 <form class="cart" action="#" method="post">
@@ -130,11 +137,12 @@ function SingleProduct() {
                       class="input-text qty text form-control w-25 mr-3"
                       step="1"
                       min="1"
-                      max="9"
+                      // max="9"
                       name="quantity"
                       value="1"
                       title="Qty"
                       size="4"
+                      onChange={() => {}}
                     />
                     <a href="#" class="btn btn-main btn-small">
                       Add to cart
@@ -176,13 +184,20 @@ function SingleProduct() {
                     <span class="font-weight-bold text-capitalize product-meta-title">
                       Categories :
                     </span>
-                    <a href="#">Products , </a>
-                    <a href="#">Soap</a>
+                    {/* <a href="#">Products , </a>
+                    <a href="#">Soap</a> */}
+                    <a
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
+                      {product.product?.category.name}{" "}
+                    </a>
                   </div>
 
                   <div class="product-share mt-5">
                     <ul class="list-inline">
-                      <li class="list-inline-item">
+                      {/* <li class="list-inline-item">
                         <a href="#">
                           <i class="tf-ion-social-facebook"></i>
                         </a>
@@ -201,7 +216,7 @@ function SingleProduct() {
                         <a href="#">
                           <i class="tf-ion-social-pinterest"></i>
                         </a>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </div>

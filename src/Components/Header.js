@@ -16,6 +16,7 @@ function Header() {
   });
   const navigate = useNavigate();
   const handleLogout = () => {
+    // alert("a");
     logout(navigate);
   };
   return (
@@ -63,10 +64,13 @@ function Header() {
           </li>
           <li class="dropdown cart-nav dropdown-slide list-inline-item">
             <a
-              href="#"
+              // href="#"
               class="dropdown-toggle cart-icon"
-              data-toggle="dropdown"
-              data-hover="dropdown"
+              // data-toggle="dropdown"
+              // data-hover="dropdown"
+              style={{
+                cursor: "pointer",
+              }}
             >
               <i class="tf-ion-ios-person mr-3"></i>
             </a>

@@ -24,6 +24,20 @@ function getAllProduct(setListProduct) {
     });
 }
 
+function getProductById(idProduct, setProduct) {
+  axios({
+    method: "get",
+    url: `${baseUrl}product/get-product/${idProduct}`,
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      setProduct(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 function getAllCategory(setListCategory) {
   axios({
     method: "get",
@@ -82,4 +96,5 @@ export {
   searchProductByCategory,
   searchProductByKeyword,
   getAllCategory,
+  getProductById,
 };

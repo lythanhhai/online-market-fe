@@ -37,6 +37,7 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
             <Route path="/" element={<Home />} />
             <Route path="/Home" element={<Home />}></Route>
@@ -46,7 +47,6 @@ function App() {
               element={<SingleProduct />}
             ></Route>
 
-            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/notfound" element={<NotFound />} />
             <Route path="*" element={<Navigate to="/notfound" />} />
             {getLocalStorage(STORAGE.USER_TOKEN) ? (
