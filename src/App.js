@@ -21,12 +21,18 @@ import PrivateRoutes from "./Components/PrivateRoutes";
 import ProfilePage from "./Layouts/Profile/Profile";
 import { getLocalStorage, STORAGE } from "./Utils/storage";
 import NotFound from "./Components/NotFound";
+import Seller from "./Layouts/Seller/Seller";
+import { useLocation } from "react-router-dom";
+
 function App() {
+  const location = useLocation();
   return (
     <div className="App">
-      <BrowserRouter>
         <div className="position-relative">
-          <Header></Header>
+          { location.pathname !== '/login' && location.pathname !== '/signup' 
+          && location.pathname !== '/forgot-password' && location.pathname !== '/seller' ? 
+          <> <Header></Header> </>
+          :<></>}
           <Routes>
             <Route element={<PrivateRoutes />}>
               <Route path="/checkout" element={<Checkout />} />
@@ -59,10 +65,13 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
               </Route>
             )}
+            <Route path="/seller" element={<Seller />} />
           </Routes>
-          <Footer></Footer>
+          { location.pathname !== '/login' && location.pathname !== '/signup' 
+          && location.pathname !== '/forgot-password' && location.pathname !== '/seller' ? 
+          <>  <Footer></Footer> </>
+          :<></>}
         </div>
-      </BrowserRouter>
     </div>
   );
 }
