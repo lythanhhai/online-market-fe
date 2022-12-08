@@ -57,8 +57,8 @@ function ListProduct() {
     setListEachProductPage(arr);
   }, [currentPage]);
   const navigate = useNavigate();
-  const handleClickDetailProduct = () => {
-    navigate("/single-product/1");
+  const handleClickDetailProduct = (idProduct) => {
+    navigate(`/single-product/${idProduct}`);
   };
   const handleAddToCart = () => {};
   const elemListProduct = listEachProductPage.map((item, index) => {
@@ -68,7 +68,10 @@ function ListProduct() {
           <div class="product-wrap">
             <a
               onClick={() => {
-                handleClickDetailProduct();
+                handleClickDetailProduct(item.product.id);
+              }}
+              style={{
+                cursor: "pointer",
               }}
             >
               <img
@@ -79,7 +82,10 @@ function ListProduct() {
             </a>
             <a
               onClick={() => {
-                handleClickDetailProduct();
+                handleClickDetailProduct(item.product.id);
+              }}
+              style={{
+                cursor: "pointer",
               }}
             >
               <img
@@ -107,9 +113,9 @@ function ListProduct() {
 
           <div class="product-info">
             <h2 class="product-title h5 mb-0">
-              <a href="/single-product">{item.name}</a>
+              <a href="/single-product">{item.product.name}</a>
             </h2>
-            <span class="price">${item.price}</span>
+            <span class="price">${item.product.price}</span>
           </div>
         </div>
       </div>

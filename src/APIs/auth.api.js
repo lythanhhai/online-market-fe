@@ -67,10 +67,13 @@ function logout(navigate) {
       removeLocalStorage(STORAGE.USER_DATA);
       removeLocalStorage(STORAGE.USER_TOKEN);
       removeLocalStorage("EXPIRE");
-      navigate("/login");
     })
     .catch((err) => {
-      console.log(err);
+      removeLocalStorage(STORAGE.USER_DATA);
+      removeLocalStorage(STORAGE.USER_TOKEN);
+      removeLocalStorage("EXPIRE");
+      navigate("/login");
+      // console.log(err);
     });
 }
 

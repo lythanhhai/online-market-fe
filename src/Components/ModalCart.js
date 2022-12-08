@@ -1,14 +1,19 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteItemInCart } from "../APIs/cart.api";
 
 function ModalCart({ listCart }) {
   const handleDeleteItemInCart = (idItem) => {
     deleteItemInCart(idItem);
   };
+  const navigate = useNavigate();
+  const handleClickDetailProduct = (idProduct) => {
+    navigate(`/single-product/${idProduct}`);
+  };
   const elemItem = listCart.map((item, index) => {
     return (
       <div class="media" key={index}>
-        <a href="/product-single">
+        <a href={`/single-product/${item.product.id}`}>
           <img
             class="media-object img- mr-3"
             src="assets/images/cart-1.jpg"
@@ -26,6 +31,9 @@ function ModalCart({ listCart }) {
           class="remove"
           onClick={() => {
             handleDeleteItemInCart(item.id);
+          }}
+          style={{
+            cursor: "pointer",
           }}
         >
           <i class="tf-ion-close"></i>
