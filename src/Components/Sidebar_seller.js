@@ -20,13 +20,13 @@ const [item, setItem] = useState('products');
     <div class="row">
         <div class="col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100 border-right" id="sidebar">
             <ul class="nav flex-column flex-nowrap overflow-hidden mt-4" style={{ marginLeft : "15%" }}>
-                <li class="nav-item"><a class="nav-link text-truncate" href="#"><i class="fa fa-list-alt" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('products')}>Products</span></a></li>
+                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-list-alt" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('products')}>Products</span></a></li>
                 <li class="nav-item">
                     <a class="nav-link text-truncate" href="#submenu1sub1" data-toggle="collapse" data-target="#submenu1sub1"><i class="fa fa-shopping-cart" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('orders')}>Orders</span></a>
                     <div class="collapse" id="submenu1sub1" aria-expanded="false">
                         <ul class="flex-column nav pl-4">
                             <li class="nav-item">
-                                <a class="nav-link p-1 text-truncate" href="#" onClick={() => setItem('ordered')}>
+                                <a class="nav-link p-1 text-truncate" style={{ cursor : "pointer"}} onClick={() => setItem('ordered')}>
                                     <i class="fa fa-shopping-cart" style={{ marginRight : "15px" }}></i> Ordered </a>
                             </li>
                         </ul>
@@ -34,7 +34,7 @@ const [item, setItem] = useState('products');
                     <div class="collapse" id="submenu1sub1" aria-expanded="false">
                         <ul class="flex-column nav pl-4">
                             <li class="nav-item">
-                                <a class="nav-link p-1 text-truncate" href="#" onClick={() => setItem('transport')}>
+                                <a class="nav-link p-1 text-truncate" style={{ cursor : "pointer"}} onClick={() => setItem('transport')}>
                                     <i class="fa fa-shopping-cart" style={{ marginRight : "15px" }}></i> Transport </a>
                             </li>
                         </ul>
@@ -42,16 +42,16 @@ const [item, setItem] = useState('products');
                     <div class="collapse" id="submenu1sub1" aria-expanded="false">
                         <ul class="flex-column nav pl-4">
                             <li class="nav-item">
-                                <a class="nav-link p-1 text-truncate" href="#" onClick={() => setItem('received')}>
+                                <a class="nav-link p-1 text-truncate" style={{ cursor : "pointer"}} onClick={() => setItem('received')}>
                                     <i class="fa fa-shopping-cart" style={{ marginRight : "15px" }}></i> Received </a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link text-truncate" href="#"><i class="fa fa-user" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('customers')}>Customers</span></a></li>
-                <li class="nav-item"><a class="nav-link text-truncate" href="#"><i class="fa fa-bar-chart-o" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('analytics')}>Analytics</span></a></li>
-                <li class="nav-item"><a class="nav-link text-truncate" href="#"><i class="fa fa-cog" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('setting')}>Setting</span></a></li>
-                <li class="nav-item"><a class="nav-link text-truncate" href="#"><i class="fa fa-sign-out" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" >Logout</span></a></li>
+                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-user" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('customers')}>Customers</span></a></li>
+                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-bar-chart-o" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('analytics')}>Analytics</span></a></li>
+                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-cog" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('setting')}>Setting</span></a></li>
+                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-sign-out" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" >Logout</span></a></li>
             </ul>
         </div>
         <div class="col pt-2 bg-light">
