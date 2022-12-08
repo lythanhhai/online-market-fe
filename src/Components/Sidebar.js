@@ -1,9 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import "jquery/dist/jquery.slim.min.js";
+import "popper.js/dist/umd/popper.min.js";
+import "bootstrap/dist/js/bootstrap.min.js";
+import { Link , Route} from "react-router-dom";
 
 function Sidebar() {
   return (
-    <div class="collapse navbar-collapse " id="main-navbar">
+    <div class=" navbar-collapse " id="main-navbar">
       <ul class="navbar-nav mx-auto">
         <li class="nav-item active">
           <Link class="nav-link" to={{ pathname: "/" }}>
