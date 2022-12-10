@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import { getItem } from "../../APIs/cart.api";
+import { getProductById } from "../../APIs/product.api";
 
 function Cart() {
   const [listCart, setListCart] = useState([]);
+ 
   useEffect(() => {
     getItem(setListCart);
-  });
+  }, []);
+
   const [data, setData] = useState({
     quantity: "",
   });
   const elemListItemInCart = listCart.map((item, index) => {
+    
     return (
-      <tr class="cart_item">
+      <tr
+        class="cart_item"
+        style={{
+          // flexDirection: "row",
+          // // justifyContent: "center",
+          alignItems: "center !important",
+        }}
+      >
         <td class="product-thumbnail" data-title="Thumbnail">
           <a href="/product-single">
             <img
@@ -28,9 +39,9 @@ function Cart() {
 
         <td class="product-price" data-title="Price">
           <span class="amount">
-            <span class="currencySymbol">
+            {/* <span class="currencySymbol">
               <pre wp-pre-tag-3=""></pre>
-            </span>
+            </span> */}
             {item.product?.price}
           </span>
         </td>
@@ -58,22 +69,38 @@ function Cart() {
         </td>
         <td class="product-subtotal" data-title="Total">
           <span class="amount">
-            <span class="currencySymbol">
+            {/* <span class="currencySymbol">
               <pre wp-pre-tag-3=""></pre>
-            </span>
+            </span> */}
             90.00
           </span>
         </td>
         <td class="product-remove" data-title="Remove">
           <a
-            href="#"
             class="remove"
             aria-label="Remove this item"
             data-product_id="30"
             data-product_sku=""
+            style={{
+              cursor: "pointer",
+            }}
           >
             ×
           </a>
+        </td>
+
+        <td class="product-remove" data-title="update">
+          <span class="float-right mt-3 mt-md-0">
+            <button
+              type="button"
+              class="btn btn-dark btn-small"
+              name="update_cart"
+              value="Update cart"
+              disabled=""
+            >
+              Update cart
+            </button>
+          </span>
         </td>
       </tr>
     );
@@ -130,7 +157,7 @@ function Cart() {
                     <tbody>
                       {elemListItemInCart}
                       <tr>
-                        <td colspan="6" class="actions">
+                        <td colspan="12" class="actions">
                           <div class="coupon">
                             <input
                               type="text"
@@ -148,7 +175,7 @@ function Cart() {
                             >
                               Apply coupon
                             </button>
-                            <span class="float-right mt-3 mt-lg-0">
+                            {/* <span class="float-right mt-3 mt-lg-0">
                               <button
                                 type="button"
                                 class="btn btn-dark btn-small"
@@ -158,7 +185,7 @@ function Cart() {
                               >
                                 Update cart
                               </button>
-                            </span>
+                            </span> */}
                           </div>
                           <input
                             type="hidden"

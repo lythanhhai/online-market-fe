@@ -51,8 +51,8 @@ function Header() {
             <a
               href="#"
               class="dropdown-toggle cart-icon"
-              data-toggle="dropdown"
-              data-hover="dropdown"
+              // data-toggle="dropdown"
+              // data-hover="dropdown"
             >
               <i class="tf-ion-android-cart"></i>
             </a>
@@ -66,8 +66,8 @@ function Header() {
             <a
               // href="#"
               class="dropdown-toggle cart-icon"
-              // data-toggle="dropdown"
-              // data-hover="dropdown"
+              data-toggle="dropdown"
+              data-hover="dropdown"
               style={{
                 cursor: "pointer",
               }}

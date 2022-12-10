@@ -17,15 +17,13 @@ function ListProduct() {
   const [listEachProductPage, setListEachProductPage] = useState([]);
   const [listCategory, setListCategory] = useState([]);
   const [typeCategory, setTypeCategory] = useState(0);
-  // useEffect(() => {
-  //   getAllProduct(setListProduct);
-  //   getAllCategory(setListCategory);
-  // }, []);
+  useEffect(() => {
+    getAllCategory(setListCategory);
+  }, []);
 
   useEffect(() => {
-    if (typeCategory === 0) {
+    if (typeCategory == 0) {
       getAllProduct(setListProduct);
-      getAllCategory(setListCategory);
     } else {
       searchProductByCategory(typeCategory, setListProduct);
     }
@@ -48,6 +46,10 @@ function ListProduct() {
   }, [listProduct]);
 
   useEffect(() => {
+    // console.log());
+  }, [listEachProductPage]);
+
+  useEffect(() => {
     let arr = [];
     arr = listProduct.slice(
       (currentPage - 1) * itemEachPage,
@@ -61,7 +63,7 @@ function ListProduct() {
     navigate(`/single-product/${idProduct}`);
   };
   const handleAddToCart = () => {};
-  const elemListProduct = listEachProductPage.map((item, index) => {
+  const elemListProduct = listEachProductPage?.map((item, index) => {
     return (
       <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5" key={index}>
         <div class="product">
@@ -122,7 +124,7 @@ function ListProduct() {
     );
   });
 
-  const elemPage = numberPage.map((item, index) => {
+  const elemPage = numberPage?.map((item, index) => {
     if (currentPage === item) {
       return (
         <li
@@ -150,7 +152,7 @@ function ListProduct() {
       </li>
     );
   });
-  const elemCategory = listCategory.map((item, index) => {
+  const elemCategory = listCategory?.map((item, index) => {
     return (
       <option value={item.id} key={item.id}>
         {item.name}
@@ -189,12 +191,12 @@ function ListProduct() {
                             setTypeCategory(e.target.value);
                           }}
                         >
-                          <option value="0" selected="selected">
+                          <option value={0} selected="selected">
                             All Category
                           </option>
                           {elemCategory}
                         </select>
-                        <input type="hidden" name="paged" value="1" />
+                        {/* <input type="hidden" name="paged" value="1" /> */}
                       </form>
                     </div>
 
@@ -230,38 +232,42 @@ function ListProduct() {
               <div class="col-12">
                 <nav aria-label="Page navigation">
                   <ul class="pagination">
-                    <li
-                      class="page-item"
-                      onClick={() => {
-                        if (currentPage === 1) {
-                          setCurrentPage(currentPage);
-                        } else {
-                          setCurrentPage(currentPage - 1);
-                        }
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <a class="page-link" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
+                    {elemPage.length > 0 ? (
+                      <li
+                        class="page-item"
+                        onClick={() => {
+                          if (currentPage === 1) {
+                            setCurrentPage(currentPage);
+                          } else {
+                            setCurrentPage(currentPage - 1);
+                          }
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <a class="page-link" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                    ) : null}
 
                     {elemPage}
-                    <li
-                      class="page-item"
-                      onClick={() => {
-                        if (currentPage === numberPage.length) {
-                          setCurrentPage(currentPage);
-                        } else {
-                          setCurrentPage(currentPage + 1);
-                        }
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <a class="page-link" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
+                    {elemPage.length > 0 ? (
+                      <li
+                        class="page-item"
+                        onClick={() => {
+                          if (currentPage === numberPage.length) {
+                            setCurrentPage(currentPage);
+                          } else {
+                            setCurrentPage(currentPage + 1);
+                          }
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <a class="page-link" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    ) : null}
                   </ul>
                 </nav>
               </div>
