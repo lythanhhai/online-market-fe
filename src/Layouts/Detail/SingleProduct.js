@@ -9,7 +9,7 @@ function SingleProduct() {
   const [Data, setData] = useState({
     productId: parseInt(params.productId),
     quantity: 1,
-    typeId: 1,
+    typeId: null,
   });
   useEffect(() => {
     // alert(params.productId);
@@ -47,7 +47,13 @@ function SingleProduct() {
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb bg-transparent justify-content-center">
                     <li class="breadcrumb-item">
-                      <a routerLink="/">Home</a>
+                      <a
+                        routerLink="/"
+                        style={{ cursor: "pointer" }}
+                        href="/home"
+                      >
+                        Home
+                      </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                       Detail Product
@@ -127,7 +133,7 @@ function SingleProduct() {
 
             <div class="col-md-7">
               <div class="single-product-details mt-5 mt-lg-0">
-                <h2>{product.product?.name}</h2>
+                <h2>{product.productResponse?.name}</h2>
                 <div class="sku_wrapper mb-4">
                   SKU: <span class="text-muted">AB1563456789 </span>
                 </div>
@@ -135,7 +141,7 @@ function SingleProduct() {
                 <hr />
 
                 <h3 class="product-price">
-                  ${product.product?.price}
+                  ${product.productResponse?.price}
                   {/* <del>$119.90</del> */}
                 </h3>
 
@@ -146,7 +152,7 @@ function SingleProduct() {
                   Eveniet consequatur ipsum dicta recusandae.
                 </p> */}
                 <p class="product-description my-4 ">
-                  {product.product?.description}
+                  {product.productResponse?.description}
                 </p>
 
                 <form class="cart" action="#" method="post">
@@ -228,7 +234,7 @@ function SingleProduct() {
                         cursor: "pointer",
                       }}
                     >
-                      {product.product?.category.name}{" "}
+                      {product.productResponse?.category.name}{" "}
                     </a>
                   </div>
 

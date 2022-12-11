@@ -23,6 +23,7 @@ import { getLocalStorage, STORAGE } from "./Utils/storage";
 import NotFound from "./Components/NotFound";
 import Seller from "./Layouts/Seller/Seller";
 import { useLocation } from "react-router-dom";
+import PermanentDrawerLeft from "./Layouts/Profile/SideBar";
 
 function App() {
   const location = useLocation();
@@ -32,7 +33,8 @@ function App() {
         {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/forgot-password" &&
-        location.pathname !== "/seller" ? (
+        location.pathname !== "/seller" &&
+        location.pathname !== "/my_account" ? (
           <>
             {" "}
             <Header></Header>{" "}
@@ -44,13 +46,13 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/my_account" element={<PermanentDrawerLeft />} />
           </Route>
           <Route path="/" element={<Home />} />
           <Route path="/Home" element={<Home />}></Route>
           <Route
             // exact
-            path="/single-product/:productId"
+            path="/detail-product/:productId"
             element={<SingleProduct />}
           ></Route>
 
@@ -77,7 +79,8 @@ function App() {
         {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/forgot-password" &&
-        location.pathname !== "/seller" ? (
+        location.pathname !== "/seller" &&
+        location.pathname !== "/my_account" ? (
           <>
             {" "}
             <Footer></Footer>{" "}

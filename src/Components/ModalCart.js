@@ -8,12 +8,12 @@ function ModalCart({ listCart }) {
   };
   const navigate = useNavigate();
   const handleClickDetailProduct = (idProduct) => {
-    navigate(`/single-product/${idProduct}`);
+    navigate(`/detail-product/${idProduct}`);
   };
   const elemItem = listCart.map((item, index) => {
     return (
       <div class="media" key={index}>
-        <a href={`/single-product/${item.product.id}`}>
+        <a href={`/detail-product/${item.product.id}`}>
           <img
             class="media-object img- mr-3"
             src="assets/images/cart-1.jpg"

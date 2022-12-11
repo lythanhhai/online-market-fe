@@ -24,14 +24,16 @@ function getAllProduct(setListProduct) {
     });
 }
 
-function getProductById(idProduct, setProduct) {
+function getProductById(idProduct, setProduct = null) {
   axios({
     method: "get",
     url: `${baseUrl}product/get-product/${idProduct}`,
   })
     .then((res) => res.data)
     .then((data) => {
-      setProduct(data);
+      if (setProduct) {
+        setProduct(data);
+      }
     })
     .catch((err) => {
       console.log(err);

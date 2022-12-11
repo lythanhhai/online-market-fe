@@ -1,19 +1,60 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { getItem } from "../../APIs/cart.api";
-import { getProductById } from "../../APIs/product.api";
+import {
+  deleteItemInCart,
+  getItem,
+  updateItemInCart,
+} from "../../APIs/cart.api";
+import baseUrl from "../../APIs/config";
+import { getAllProduct, getProductById } from "../../APIs/product.api";
 
 function Cart() {
   const [listCart, setListCart] = useState([]);
- 
+  const [listProduct, setListProduct] = useState([]);
+  const [action, setAction] = useState(false);
   useEffect(() => {
     getItem(setListCart);
+    getAllProduct(setListProduct);
   }, []);
 
+  useEffect(() => {
+    if (action) {
+      getItem(setListCart);
+      getAllProduct(setListProduct);
+    }
+    return setAction(false);
+  }, [action]);
+
   const [data, setData] = useState({
+    typeId: 0,
     quantity: "",
+    itemId: 0,
   });
+  const handleUpdateCart = (idItem, quantity, typeId) => {
+    if (!typeId) {
+      typeId = 1;
+    }
+    // console.log({
+    //   itemId: idItem,
+    //   quantity,
+    //   typeId,
+    // });
+    setAction(true);
+    updateItemInCart({
+      itemId: idItem,
+      quantity,
+      typeId,
+    });
+  };
+  const handleDeleteCart = (idItem) => {
+    setAction(true);
+    deleteItemInCart(idItem);
+  };
+
   const elemListItemInCart = listCart.map((item, index) => {
-    
+    let product = listProduct.find((itemProduct, indexProduct) => {
+      return itemProduct.productResponse?.id === item.product?.id;
+    });
     return (
       <tr
         class="cart_item"
@@ -59,20 +100,62 @@ function Cart() {
               size="4"
               defaultValue={item?.quantity}
               onChange={(e) => {
+                handleUpdateCart(
+                  item?.id,
+                  parseInt(e.target.value),
+                  item.type?.id
+                );
                 setData({
                   ...data,
-                  quantity: e.target.value,
+                  quantity: parseInt(e.target.value),
                 });
               }}
             />
           </div>
         </td>
+
+        <td class="product-category" data-title="Category">
+          <div class="category">
+            <label class="sr-only">Category</label>
+            {product?.typeList.length > 0 ? (
+              <select
+                class="form-control"
+                defaultValue={item.type?.id}
+                onChange={(e) => {
+                  handleUpdateCart(
+                    item?.id,
+                    item?.quantity,
+                    parseInt(e.target.value)
+                  );
+                  setData({
+                    ...data,
+                    typeId: parseInt(e.target.value),
+                  });
+                }}
+                style={{
+                  width: "70%",
+                }}
+              >
+                {product?.typeList.map((item, index) => {
+                  return (
+                    <option value={item?.id} key={item?.id}>
+                      {item?.color}
+                      {" - "}
+                      {item?.size}
+                    </option>
+                  );
+                })}
+              </select>
+            ) : null}
+          </div>
+        </td>
+
         <td class="product-subtotal" data-title="Total">
           <span class="amount">
             {/* <span class="currencySymbol">
               <pre wp-pre-tag-3=""></pre>
             </span> */}
-            90.00
+            {item?.quantity * item.product?.price}
           </span>
         </td>
         <td class="product-remove" data-title="Remove">
@@ -84,12 +167,15 @@ function Cart() {
             style={{
               cursor: "pointer",
             }}
+            onClick={() => {
+              handleDeleteCart(item?.id);
+            }}
           >
             ×
           </a>
         </td>
 
-        <td class="product-remove" data-title="update">
+        {/* <td class="product-remove" data-title="update">
           <span class="float-right mt-3 mt-md-0">
             <button
               type="button"
@@ -101,7 +187,7 @@ function Cart() {
               Update cart
             </button>
           </span>
-        </td>
+        </td> */}
       </tr>
     );
   });
@@ -149,6 +235,7 @@ function Cart() {
                         <th class="product-name">Product</th>
                         <th class="product-price">Price</th>
                         <th class="product-quantity">Quantity</th>
+                        <th class="product-category">Category</th>
                         <th class="product-subtotal">Total</th>
                         <th class="product-remove"> </th>
                       </tr>

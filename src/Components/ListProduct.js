@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addItemToCart } from "../APIs/cart.api";
 import {
   getAllCategory,
   getAllProduct,
@@ -17,6 +18,7 @@ function ListProduct() {
   const [listEachProductPage, setListEachProductPage] = useState([]);
   const [listCategory, setListCategory] = useState([]);
   const [typeCategory, setTypeCategory] = useState(0);
+
   useEffect(() => {
     getAllCategory(setListCategory);
   }, []);
@@ -60,9 +62,23 @@ function ListProduct() {
   }, [currentPage]);
   const navigate = useNavigate();
   const handleClickDetailProduct = (idProduct) => {
-    navigate(`/single-product/${idProduct}`);
+    navigate(`/detail-product/${idProduct}`);
   };
-  const handleAddToCart = () => {};
+  const handleAddToCart = (productId, existType) => {
+    if (existType > 0) {
+      addItemToCart({
+        productId: productId,
+        quantity: 1,
+        typeId: 1,
+      });
+    } else {
+      addItemToCart({
+        productId: productId,
+        quantity: 1,
+        typeId: null,
+      });
+    }
+  };
   const elemListProduct = listEachProductPage?.map((item, index) => {
     return (
       <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5" key={index}>
@@ -70,7 +86,7 @@ function ListProduct() {
           <div class="product-wrap">
             <a
               onClick={() => {
-                handleClickDetailProduct(item.product.id);
+                handleClickDetailProduct(item.productResponse.id);
               }}
               style={{
                 cursor: "pointer",
@@ -78,13 +94,17 @@ function ListProduct() {
             >
               <img
                 class="img-fluid w-100 mb-3 img-first"
-                src="assets/images/322.jpg"
+                src={
+                  item.urlImgList.length > 0
+                    ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`
+                    : "assets/images/322.jpg"
+                }
                 alt="product-img"
               />
             </a>
             <a
               onClick={() => {
-                handleClickDetailProduct(item.product.id);
+                handleClickDetailProduct(item.productResponse.id);
               }}
               style={{
                 cursor: "pointer",
@@ -92,7 +112,11 @@ function ListProduct() {
             >
               <img
                 class="img-fluid w-100 mb-3 img-second"
-                src="assets/images/444.jpg"
+                src={
+                  item.urlImgList.length > 0
+                    ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`
+                    : "assets/images/444.jpg"
+                }
                 alt="product-img"
               />
             </a>
@@ -101,9 +125,8 @@ function ListProduct() {
           <span class="onsale">Sale</span>
           <div class="product-hover-overlay">
             <a
-              // href=""
               onClick={() => {
-                handleAddToCart();
+                handleAddToCart(item.productResponse.id, item.typeList.length);
               }}
             >
               <i class="tf-ion-android-cart text-white"></i>
@@ -115,9 +138,9 @@ function ListProduct() {
 
           <div class="product-info">
             <h2 class="product-title h5 mb-0">
-              <a href="/single-product">{item.product.name}</a>
+              <a href="/single-product">{item.productResponse.name}</a>
             </h2>
-            <span class="price">${item.product.price}</span>
+            <span class="price">${item.productResponse.price}</span>
           </div>
         </div>
       </div>
