@@ -6,11 +6,11 @@ function Footer() {
                 <div class="row">
                         <div class="col-md-6 col-lg-4 col-sm-6 mb-5 mb-lg-0 text-center text-sm-left mr-auto">
                         <div class="footer-widget">
-                                <h4 class="mb-4">E-Shop</h4>
+                                <h4 class="mb-4">Online-market</h4>
                                 <p class="lead">Iste dolores iure quis excepturi, deserunt praesentium.</p>
                                 
                                 <div class="">
-                                    <p class="mb-0"><strong>Location : </strong>North Punjab ,INDIA</p>
+                                    <p class="mb-0"><strong>Location : </strong>Vietnam</p>
                                     <p><strong>Support Email : </strong> support@email.com</p>
                                 </div>
                         </div>
@@ -63,7 +63,7 @@ function Footer() {
                 <div class="container">
                 <div class="row ">
                         <div class="col-lg-6">
-                            <p class="copyright mb-0 ">@ Copyright Reserved to therichpost &amp; made by <a href="https://therichpost.com/">therichpost</a></p>
+                            {/* <p class="copyright mb-0 ">@ Copyright Reserved to therichpost &amp; made by <a href="https://therichpost.com/">therichpost</a></p> */}
                         </div>
                         <div class="col-lg-6">
                             <ul class="list-inline mb-0 footer-btm-links text-lg-right mt-2 mt-lg-0">

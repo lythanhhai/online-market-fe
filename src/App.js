@@ -1,39 +1,94 @@
-import Header from './Components/Header'; //Include Header
-import Footer from './Components/Footer'; //Include Footer
-import Home from './Components/Home'
-import Shop from './Components/Shop'
-import SingleProduct from './Components/SingleProduct'
-import Checkout from './Components/Checkout'
-import Cart from './Components/Cart'
-import Login from './Components/Login'
-import Signup from './Components/Signup'
-import ForgotPassword from './Components/ForgotPassword'
+import Header from "./Components/Header"; //Include Header
+import Footer from "./Components/Footer"; //Include Footer
+import Home from "./Layouts/Home/Home";
+import Shop from "./Components/Shop";
+import SingleProduct from "./Layouts/Detail/SingleProduct";
+import Checkout from "./Layouts/Process/Checkout";
+import Cart from "./Layouts/Cart/Cart";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
+import ForgotPassword from "./Components/ForgotPassword";
 import {
   BrowserRouter,
   Routes,
   Route,
   Link,
-  Outlet
+  Outlet,
+  HashRouter,
+  Navigate,
 } from "react-router-dom";
+import PrivateRoutes from "./Components/PrivateRoutes";
+import ProfilePage from "./Layouts/Profile/Profile";
+import { getLocalStorage, STORAGE } from "./Utils/storage";
+import NotFound from "./Components/NotFound";
+import Seller from "./Layouts/Seller/Seller";
+import { useLocation } from "react-router-dom";
+import PermanentDrawerLeft from "./Layouts/Profile/SideBar";
+
 function App() {
+  const location = useLocation();
   return (
     <div className="App">
-      
-        <BrowserRouter>
-          <Header></Header>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/single-product" element={<SingleProduct />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/cart" element={<Cart />} />
+      <div className="position-relative">
+        {location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        location.pathname !== "/forgot-password" &&
+        location.pathname !== "/seller" &&
+        location.pathname !== "/my_account" ? (
+          <>
+            {" "}
+            <Header></Header>{" "}
+          </>
+        ) : (
+          <></>
+        )}
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/my_account" element={<PermanentDrawerLeft />} />
+          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />}></Route>
+          <Route
+            // exact
+            path="/detail-product/:productId"
+            element={<SingleProduct />}
+          ></Route>
+
+          <Route path="/notfound" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/notfound" />} />
+          {getLocalStorage(STORAGE.USER_TOKEN) ? (
+            <Route>
+              <Route path="/login" element={<Navigate to="/home" />} />
+              <Route path="/signup" element={<Navigate to="/home" />} />
+              <Route
+                path="/forgot-password"
+                element={<Navigate to="/home" />}
+              />
+            </Route>
+          ) : (
+            <Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-            </Routes>
-          <Footer></Footer>
-        </BrowserRouter>
-     
+            </Route>
+          )}
+          <Route path="/seller" element={<Seller />} />
+        </Routes>
+        {location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        location.pathname !== "/forgot-password" &&
+        location.pathname !== "/seller" &&
+        location.pathname !== "/my_account" ? (
+          <>
+            {" "}
+            <Footer></Footer>{" "}
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }
