@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { addItemToCart } from "../APIs/cart.api";
 import {
   getAllCategory,
   getAllProduct,
@@ -17,15 +18,14 @@ function ListProduct() {
   const [listEachProductPage, setListEachProductPage] = useState([]);
   const [listCategory, setListCategory] = useState([]);
   const [typeCategory, setTypeCategory] = useState(0);
-  // useEffect(() => {
-  //   getAllProduct(setListProduct);
-  //   getAllCategory(setListCategory);
-  // }, []);
 
   useEffect(() => {
-    if (typeCategory === 0) {
+    getAllCategory(setListCategory);
+  }, []);
+
+  useEffect(() => {
+    if (typeCategory == 0) {
       getAllProduct(setListProduct);
-      getAllCategory(setListCategory);
     } else {
       searchProductByCategory(typeCategory, setListProduct);
     }
@@ -48,6 +48,10 @@ function ListProduct() {
   }, [listProduct]);
 
   useEffect(() => {
+    // console.log());
+  }, [listEachProductPage]);
+
+  useEffect(() => {
     let arr = [];
     arr = listProduct.slice(
       (currentPage - 1) * itemEachPage,
@@ -58,17 +62,31 @@ function ListProduct() {
   }, [currentPage]);
   const navigate = useNavigate();
   const handleClickDetailProduct = (idProduct) => {
-    navigate(`/single-product/${idProduct}`);
+    navigate(`/detail-product/${idProduct}`);
   };
-  const handleAddToCart = () => {};
-  const elemListProduct = listEachProductPage.map((item, index) => {
+  const handleAddToCart = (productId, existType) => {
+    if (existType > 0) {
+      addItemToCart({
+        productId: productId,
+        quantity: 1,
+        typeId: 1,
+      });
+    } else {
+      addItemToCart({
+        productId: productId,
+        quantity: 1,
+        typeId: null,
+      });
+    }
+  };
+  const elemListProduct = listEachProductPage?.map((item, index) => {
     return (
       <div class="col-lg-4 col-12 col-md-6 col-sm-6 mb-5" key={index}>
         <div class="product">
           <div class="product-wrap">
             <a
               onClick={() => {
-                handleClickDetailProduct(item.product.id);
+                handleClickDetailProduct(item.productResponse.id);
               }}
               style={{
                 cursor: "pointer",
@@ -76,13 +94,17 @@ function ListProduct() {
             >
               <img
                 class="img-fluid w-100 mb-3 img-first"
-                src="assets/images/322.jpg"
+                src={
+                  item.urlImgList.length > 0
+                    ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`
+                    : "assets/images/322.jpg"
+                }
                 alt="product-img"
               />
             </a>
             <a
               onClick={() => {
-                handleClickDetailProduct(item.product.id);
+                handleClickDetailProduct(item.productResponse.id);
               }}
               style={{
                 cursor: "pointer",
@@ -90,7 +112,11 @@ function ListProduct() {
             >
               <img
                 class="img-fluid w-100 mb-3 img-second"
-                src="assets/images/444.jpg"
+                src={
+                  item.urlImgList.length > 0
+                    ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`
+                    : "assets/images/444.jpg"
+                }
                 alt="product-img"
               />
             </a>
@@ -99,9 +125,8 @@ function ListProduct() {
           <span class="onsale">Sale</span>
           <div class="product-hover-overlay">
             <a
-              // href=""
               onClick={() => {
-                handleAddToCart();
+                handleAddToCart(item.productResponse.id, item.typeList.length);
               }}
             >
               <i class="tf-ion-android-cart text-white"></i>
@@ -113,16 +138,16 @@ function ListProduct() {
 
           <div class="product-info">
             <h2 class="product-title h5 mb-0">
-              <a href="/single-product">{item.product.name}</a>
+              <a href="/single-product">{item.productResponse.name}</a>
             </h2>
-            <span class="price">${item.product.price}</span>
+            <span class="price">${item.productResponse.price}</span>
           </div>
         </div>
       </div>
     );
   });
 
-  const elemPage = numberPage.map((item, index) => {
+  const elemPage = numberPage?.map((item, index) => {
     if (currentPage === item) {
       return (
         <li
@@ -150,7 +175,7 @@ function ListProduct() {
       </li>
     );
   });
-  const elemCategory = listCategory.map((item, index) => {
+  const elemCategory = listCategory?.map((item, index) => {
     return (
       <option value={item.id} key={item.id}>
         {item.name}
@@ -189,12 +214,12 @@ function ListProduct() {
                             setTypeCategory(e.target.value);
                           }}
                         >
-                          <option value="0" selected="selected">
+                          <option value={0} selected="selected">
                             All Category
                           </option>
                           {elemCategory}
                         </select>
-                        <input type="hidden" name="paged" value="1" />
+                        {/* <input type="hidden" name="paged" value="1" /> */}
                       </form>
                     </div>
 
@@ -230,38 +255,42 @@ function ListProduct() {
               <div class="col-12">
                 <nav aria-label="Page navigation">
                   <ul class="pagination">
-                    <li
-                      class="page-item"
-                      onClick={() => {
-                        if (currentPage === 1) {
-                          setCurrentPage(currentPage);
-                        } else {
-                          setCurrentPage(currentPage - 1);
-                        }
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <a class="page-link" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
+                    {elemPage.length > 0 ? (
+                      <li
+                        class="page-item"
+                        onClick={() => {
+                          if (currentPage === 1) {
+                            setCurrentPage(currentPage);
+                          } else {
+                            setCurrentPage(currentPage - 1);
+                          }
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <a class="page-link" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                    ) : null}
 
                     {elemPage}
-                    <li
-                      class="page-item"
-                      onClick={() => {
-                        if (currentPage === numberPage.length) {
-                          setCurrentPage(currentPage);
-                        } else {
-                          setCurrentPage(currentPage + 1);
-                        }
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <a class="page-link" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
+                    {elemPage.length > 0 ? (
+                      <li
+                        class="page-item"
+                        onClick={() => {
+                          if (currentPage === numberPage.length) {
+                            setCurrentPage(currentPage);
+                          } else {
+                            setCurrentPage(currentPage + 1);
+                          }
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <a class="page-link" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    ) : null}
                   </ul>
                 </nav>
               </div>

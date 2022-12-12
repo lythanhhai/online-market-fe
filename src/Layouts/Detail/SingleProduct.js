@@ -1,14 +1,34 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { addItemToCart } from "../../APIs/cart.api";
 import { getProductById } from "../../APIs/product.api";
 
 function SingleProduct() {
   const params = useParams();
   const [product, setProduct] = useState({});
+  const [Data, setData] = useState({
+    productId: parseInt(params.productId),
+    quantity: 1,
+    typeId: null,
+  });
   useEffect(() => {
     // alert(params.productId);
     getProductById(params.productId, setProduct);
   }, []);
+  const elemType = product.typeList?.map((item, index) => {
+    return (
+      <option value={item.id}>
+        {item.color}
+        {" - "}
+        {item.size}
+      </option>
+    );
+  });
+
+  const handleAddToCart = () => {
+    addItemToCart(Data);
+    // console.log(Data);
+  };
   return (
     <div className="single-product-container">
       <section class="page-header">
@@ -27,7 +47,13 @@ function SingleProduct() {
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb bg-transparent justify-content-center">
                     <li class="breadcrumb-item">
-                      <a routerLink="/">Home</a>
+                      <a
+                        routerLink="/"
+                        style={{ cursor: "pointer" }}
+                        href="/home"
+                      >
+                        Home
+                      </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                       Detail Product
@@ -107,7 +133,7 @@ function SingleProduct() {
 
             <div class="col-md-7">
               <div class="single-product-details mt-5 mt-lg-0">
-                <h2>{product.product?.name}</h2>
+                <h2>{product.productResponse?.name}</h2>
                 <div class="sku_wrapper mb-4">
                   SKU: <span class="text-muted">AB1563456789 </span>
                 </div>
@@ -115,7 +141,7 @@ function SingleProduct() {
                 <hr />
 
                 <h3 class="product-price">
-                  ${product.product?.price}
+                  ${product.productResponse?.price}
                   {/* <del>$119.90</del> */}
                 </h3>
 
@@ -126,7 +152,7 @@ function SingleProduct() {
                   Eveniet consequatur ipsum dicta recusandae.
                 </p> */}
                 <p class="product-description my-4 ">
-                  {product.product?.description}
+                  {product.productResponse?.description}
                 </p>
 
                 <form class="cart" action="#" method="post">
@@ -139,24 +165,35 @@ function SingleProduct() {
                       min="1"
                       // max="9"
                       name="quantity"
-                      value="1"
+                      value={Data.quantity}
                       title="Qty"
                       size="4"
-                      onChange={() => {}}
+                      onChange={(e) => {
+                        setData({
+                          ...Data,
+                          quantity: parseInt(e.target.value),
+                        });
+                      }}
                     />
-                    <a href="#" class="btn btn-main btn-small">
+                    <a
+                      style={{ cursor: "pointer" }}
+                      class="btn btn-main btn-small"
+                      onClick={() => {
+                        handleAddToCart();
+                      }}
+                    >
                       Add to cart
                     </a>
                   </div>
                 </form>
 
-                <div class="color-swatches mt-4 d-flex align-items-center">
+                {/* <div class="color-swatches mt-4 d-flex align-items-center">
                   <span class="font-weight-bold text-capitalize product-meta-title">
                     color:
                   </span>
                   <ul class="list-inline mb-0">
                     <li class="list-inline-item">
-                      <a routerLink="/product-single" class="bg-info"></a>
+                      <a routerLink="/product-single" class="bg-info">Green</a>
                     </li>
                     <li class="list-inline-item">
                       <a routerLink="/product-single" class="bg-dark"></a>
@@ -165,19 +202,25 @@ function SingleProduct() {
                       <a routerLink="/product-single" class="bg-danger"></a>
                     </li>
                   </ul>
-                </div>
-
-                <div class="product-size d-flex align-items-center mt-4">
-                  <span class="font-weight-bold text-capitalize product-meta-title">
-                    Size:
-                  </span>
-                  <select class="form-control">
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                </div>
+                </div> */}
+                {product.typeList?.length > 0 ? (
+                  <div class="product-size d-flex align-items-center mt-4">
+                    <span class="font-weight-bold text-capitalize product-meta-title">
+                      Color/Size:
+                    </span>
+                    <select
+                      class="form-control"
+                      onChange={(e) => {
+                        setData({
+                          ...Data,
+                          typeId: parseInt(e.target.value),
+                        });
+                      }}
+                    >
+                      {elemType}
+                    </select>
+                  </div>
+                ) : null}
 
                 <div class="products-meta mt-4">
                   <div class="product-category d-flex align-items-center">
@@ -191,7 +234,7 @@ function SingleProduct() {
                         cursor: "pointer",
                       }}
                     >
-                      {product.product?.category.name}{" "}
+                      {product.productResponse?.category.name}{" "}
                     </a>
                   </div>
 

@@ -20,102 +20,14 @@ import {
 
 export default function ProfilePage() {
   return (
-    <section style={{ backgroundColor: "rgb(245, 245, 245)" }}>
+    <section style={{ backgroundColor: "rgb(253, 253, 253)" }}>
       <MDBContainer className="py-5">
         <MDBRow>
-          <MDBCol>
-            <MDBBreadcrumb className="bg-white rounded-3 p-3 mb-4">
-              <MDBBreadcrumbItem>
-                <a href="#">Home</a>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>
-                <a href="#">User</a>
-              </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem active>User Profile</MDBBreadcrumbItem>
-            </MDBBreadcrumb>
-          </MDBCol>
-        </MDBRow>
-
-        <MDBRow>
-          <MDBCol lg="4">
-            <MDBCard className="mb-4">
-              <MDBCardBody className="text-center">
-                <MDBCardImage
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Faenza-avatar-default-symbolic.svg/1024px-Faenza-avatar-default-symbolic.svg.png"
-                  alt="avatar"
-                  className="rounded-circle mb-4"
-                  style={{ width: "150px" }}
-                  fluid
-                />
-                {/* <svg
-                  enable-background="new 0 0 15 15"
-                  viewBox="0 0 15 15"
-                  x="0"
-                  y="0"
-                  class="shopee-svg-icon icon-headshot"
-                >
-                  <g>
-                    <circle
-                      cx="7.5"
-                      cy="4.5"
-                      fill="none"
-                      r="3.8"
-                      stroke-miterlimit="10"
-                    ></circle>
-                    <path
-                      d="m1.5 14.2c0-3.3 2.7-6 6-6s6 2.7 6 6"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-miterlimit="10"
-                    ></path>
-                  </g>
-                </svg> */}
-                <p className="text-muted mb-1">Ly Thanh Hai</p>
-                <p className="text-muted mb-4">54 Nguyen Luong Bang</p>
-                <div className="d-flex justify-content-center mb-2">
-                  {/* <MDBBtn>Follow</MDBBtn>
-                  <MDBBtn outline className="ms-1">
-                    Message
-                  </MDBBtn> */}
-                </div>
-              </MDBCardBody>
-            </MDBCard>
-
-            <MDBCard className="mb-4 mb-lg-0">
-              <MDBCardBody className="p-0">
-                <MDBListGroup flush className="rounded-3">
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon fas icon="globe fa-lg text-warning" />
-                    <button
-                      style={{
-                        backgroundColor: "transparent",
-                        border: 0,
-                        width: "70%",
-                      }}
-                    >
-                      Profile
-                    </button>
-                  </MDBListGroupItem>
-                  <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                    <MDBIcon fas icon="globe fa-lg text-warning" />
-                    <button
-                      style={{
-                        backgroundColor: "transparent",
-                        border: 0,
-                        width: "70%",
-                      }}
-                    >
-                      History booking
-                    </button>
-                  </MDBListGroupItem>
-                </MDBListGroup>
-              </MDBCardBody>
-            </MDBCard>
-          </MDBCol>
-          <MDBCol lg="8">
+          {/* <MDBCol lg="4"></MDBCol> */}
+          <MDBCol lg="12">
             <MDBCard className="mb-4">
               <MDBCardBody>
-                <MDBRow>
+                <MDBRow display="flex">
                   <MDBCol sm="3">
                     <MDBCardText>Full Name</MDBCardText>
                   </MDBCol>

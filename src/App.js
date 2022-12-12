@@ -23,55 +23,72 @@ import { getLocalStorage, STORAGE } from "./Utils/storage";
 import NotFound from "./Components/NotFound";
 import Seller from "./Layouts/Seller/Seller";
 import { useLocation } from "react-router-dom";
+import PermanentDrawerLeft from "./Layouts/Profile/SideBar";
 
 function App() {
   const location = useLocation();
   return (
     <div className="App">
-        <div className="position-relative">
-          { location.pathname !== '/login' && location.pathname !== '/signup' 
-          && location.pathname !== '/forgot-password' && location.pathname !== '/seller' ? 
-          <> <Header></Header> </>
-          :<></>}
-          <Routes>
-            <Route element={<PrivateRoutes />}>
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/profile" element={<ProfilePage />} />
-            </Route>
-            <Route path="/" element={<Home />} />
-            <Route path="/Home" element={<Home />}></Route>
-            <Route
-              // exact
-              path="/single-product/:productId"
-              element={<SingleProduct />}
-            ></Route>
+      <div className="position-relative">
+        {location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        location.pathname !== "/forgot-password" &&
+        location.pathname !== "/seller" &&
+        location.pathname !== "/my_account" ? (
+          <>
+            {" "}
+            <Header></Header>{" "}
+          </>
+        ) : (
+          <></>
+        )}
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/my_account" element={<PermanentDrawerLeft />} />
+          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />}></Route>
+          <Route
+            // exact
+            path="/detail-product/:productId"
+            element={<SingleProduct />}
+          ></Route>
 
-            <Route path="/notfound" element={<NotFound />} />
-            <Route path="*" element={<Navigate to="/notfound" />} />
-            {getLocalStorage(STORAGE.USER_TOKEN) ? (
-              <Route>
-                <Route path="/login" element={<Navigate to="/home" />} />
-                <Route path="/signup" element={<Navigate to="/home" />} />
-                <Route
-                  path="/forgot-password"
-                  element={<Navigate to="/home" />}
-                />
-              </Route>
-            ) : (
-              <Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-              </Route>
-            )}
-            <Route path="/seller" element={<Seller />} />
-          </Routes>
-          { location.pathname !== '/login' && location.pathname !== '/signup' 
-          && location.pathname !== '/forgot-password' && location.pathname !== '/seller' ? 
-          <>  <Footer></Footer> </>
-          :<></>}
-        </div>
+          <Route path="/notfound" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/notfound" />} />
+          {getLocalStorage(STORAGE.USER_TOKEN) ? (
+            <Route>
+              <Route path="/login" element={<Navigate to="/home" />} />
+              <Route path="/signup" element={<Navigate to="/home" />} />
+              <Route
+                path="/forgot-password"
+                element={<Navigate to="/home" />}
+              />
+            </Route>
+          ) : (
+            <Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+            </Route>
+          )}
+          <Route path="/seller" element={<Seller />} />
+        </Routes>
+        {location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        location.pathname !== "/forgot-password" &&
+        location.pathname !== "/seller" &&
+        location.pathname !== "/my_account" ? (
+          <>
+            {" "}
+            <Footer></Footer>{" "}
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

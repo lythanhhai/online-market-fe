@@ -7,65 +7,104 @@ import {
 } from "../Utils/storage";
 import baseUrl from "./config";
 
-function getItem(setListCart) {
+function getStatus(setListStatus) {
   axios({
     method: "get",
-    url: `${baseUrl}cart/get-item`,
+    url: `${baseUrl}order/get-status`,
     headers: {
       Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
     },
   })
     .then((res) => res.data)
     .then((data) => {
-      if (data.message) {
-        // setListCart([]);
-      } else {
-        setListCart(data);
-      }
+      setListStatus(data);
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-function getItemById(idItem) {
+function getPayment(setListPayment) {
   axios({
     method: "get",
-    url: `${baseUrl}cart/get-item/${idItem}`,
+    url: `${baseUrl}order/get-payment`,
     headers: {
       Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
     },
   })
     .then((res) => res.data)
     .then((data) => {
-      console.log(data);
+      setListStatus(data);
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-function getItemOrder(idOrder) {
+function getOrderTransport(setListOrderTransport) {
   axios({
     method: "get",
-    url: `${baseUrl}cart/get-item-order/${idOrder}`,
+    url: `${baseUrl}order/get-order-transport`,
     headers: {
       Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
     },
   })
     .then((res) => res.data)
     .then((data) => {
-      console.log(data);
+      return res.body;
+    })
+    .then((body) => {
+      setListOrderTransport(body);
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-function addItemToCart(Data) {
+function getOrderReceived(setListOrderReceived) {
+  axios({
+    method: "get",
+    url: `${baseUrl}order/get-order-received`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      return res.body;
+    })
+    .then((body) => {
+      setListOrderReceived(body);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getOrderOrdered(setListOrderOrdered) {
+  axios({
+    method: "get",
+    url: `${baseUrl}order/get-order-ordered`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      return res.body;
+    })
+    .then((body) => {
+      setListOrderOrdered(body);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getInforOrder(Data) {
   axios({
     method: "post",
-    url: `${baseUrl}cart/add-item`,
+    url: `${baseUrl}order/get-infor-order`,
     data: Data,
     headers: {
       Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
@@ -80,36 +119,16 @@ function addItemToCart(Data) {
     });
 }
 
-function updateItemInCart(Data) {
+function createOrder(Data) {
   axios({
-    method: "put",
-    url: `${baseUrl}cart/update-item`,
+    method: "post",
+    url: `${baseUrl}order/create-rder`,
     data: Data,
     headers: {
       Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
     },
   })
     .then((res) => res.data)
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-function deleteItemInCart(idItem) {
-  // console.log(getLocalStorage(STORAGE.USER_TOKEN).split(".")[2]);
-  axios({
-    method: "delete",
-    url: `${baseUrl}cart/delete-item/${idItem}`,
-    headers: {
-      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
-    },
-  })
-    .then((res) => {
-      return res.data;
-    })
     .then((data) => {
       console.log(data);
     })
@@ -119,10 +138,11 @@ function deleteItemInCart(idItem) {
 }
 
 export {
-  getItem,
-  getItemById,
-  getItemOrder,
-  addItemToCart,
-  deleteItemInCart,
-  updateItemInCart,
+  createOrder,
+  getInforOrder,
+  getStatus,
+  getPayment,
+  getOrderOrdered,
+  getOrderReceived,
+  getOrderTransport,
 };
