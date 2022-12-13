@@ -155,6 +155,76 @@ function createOrder(Data, navigate) {
     });
 }
 
+function getSaleInforOrderOrdered(setInforOrderOrdered) {
+  axios({
+    method: "get",
+    url: `${baseUrl}sale/get-info-order-ordered`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      setInforOrderOrdered(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getSaleInforOrderTransport(setInforOrderTransport) {
+  axios({
+    method: "get",
+    url: `${baseUrl}sale/get-info-order-transport`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      setInforOrderTransport(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getSaleInforOrderReceived(setInforOrderReceived) {
+  axios({
+    method: "get",
+    url: `${baseUrl}sale/get-info-order-received`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      setInforOrderReceived(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function apiUpdateStatus(Data) {
+  axios({
+    method: "post",
+    url: `${baseUrl}sale/update-status`,
+    data: Data,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      window.location.reload();
+      console.log(data)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 export {
   createOrder,
   getInforOrder,
@@ -163,4 +233,8 @@ export {
   getOrderOrdered,
   getOrderReceived,
   getOrderTransport,
+  getSaleInforOrderOrdered,
+  getSaleInforOrderTransport,
+  getSaleInforOrderReceived,
+  apiUpdateStatus
 };
