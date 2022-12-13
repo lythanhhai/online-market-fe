@@ -48,8 +48,6 @@ const [item, setItem] = useState('products');
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-user" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('customers')}>Customers</span></a></li>
-                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-bar-chart-o" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('analytics')}>Analytics</span></a></li>
                 <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-cog" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('setting')}>Setting</span></a></li>
                 <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-sign-out" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" >Logout</span></a></li>
             </ul>
@@ -69,12 +67,6 @@ const [item, setItem] = useState('products');
             )}
             {item === 'received' && (
                 <Received/>
-            )}
-            {item === 'customers' && (
-                <Customer/>
-            )}
-             {item === 'analytics' && (
-                <Analytics/>
             )}
              {item === 'setting' && (
                 <Setting/>

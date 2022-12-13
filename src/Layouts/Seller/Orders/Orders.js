@@ -6,13 +6,25 @@ import {
   MDBCardBody,
   MDBCardImage,
 } from "mdb-react-ui-kit";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import {
+  getSaleInforOrderOrdered,
+  getSaleInforOrderTransport,
+  getSaleInforOrderReceived,
+} from "../../../APIs/order.api";
 
 function Orders() {
-  const [basicModal, setBasicModal] = useState(false);
-  const toggleShowAdd = () => setBasicModal(!basicModal);
-  const [isEdit, setIsEdit] = useState(false);
-  const toggleShowEdit = () => setIsEdit(!isEdit);
+  const [listInforOrdered, setListOrderOrdered] = useState([])
+  const [listInforTransport, setListOrderTransport] = useState([])
+  const [listInforReceived, setListOrderReceived] = useState([])
+
+  useEffect(() => {
+     getSaleInforOrderOrdered(setListOrderOrdered);
+     getSaleInforOrderTransport(setListOrderTransport);
+     getSaleInforOrderReceived(setListOrderReceived);
+  },[])
+  
   return (
   <div className="p-4 block">
       <div className="d-flex">
@@ -46,16 +58,16 @@ function Orders() {
                   <MDBCardText>Total</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="2">
-                  <MDBCardText>120</MDBCardText>
+                  <MDBCardText>{listInforOrdered.length + listInforTransport.length + listInforTransport.length}</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="2">
-                  <MDBCardText>20</MDBCardText>
+                  <MDBCardText>{listInforOrdered.length}</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="2">
-                  <MDBCardText>50</MDBCardText>
+                  <MDBCardText>{listInforTransport.length}</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="1">
-                  <MDBCardText>50</MDBCardText>
+                  <MDBCardText>{listInforReceived.length}</MDBCardText>
                 </MDBCol>
               </MDBRow>
             </MDBCardBody>

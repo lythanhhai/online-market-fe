@@ -128,7 +128,7 @@ function Products() {
     <div className="p-4 block">
         <div className="d-flex">
           <h4>Products</h4>
-          <button type="button" class="btn btn-dark btn-small" style={{marginLeft : "80%"}} name="add_product" disabled="" onClick={toggleShowAdd}>Add product</button>
+          <button type="button" class="btn btn-dark btn-small" style={{marginLeft : "80%", padding: "1px 20px"}} name="add_product" disabled="" onClick={toggleShowAdd}>Add product</button>
         </div>
         <MDBCol className="mt-4" style={{marginLeft : "-15px"}}>
             <MDBCard className="mb-4">
@@ -201,6 +201,7 @@ function Products() {
                   </MDBCol>
                   <MDBCol sm="1">
                     <button type="button" class="btn btn-dark btn-small" name="edit" disabled=""
+                     style={{ padding: "1px 20px"}}
                      onClick={() => {
                       toggleShowEdit();
                       setDataUpdate({
@@ -380,10 +381,10 @@ function Products() {
                           </MDBRow>
                         </MDBModalBody>
                         <MDBModalFooter>
-                        <MDBBtn color='secondary' style={{height : "40px"}} onClick={toggleShowAdd}>
+                        <MDBBtn color='secondary' style={{height : "40px",  padding: "2px 15px"}} onClick={toggleShowAdd}>
                             Close
                         </MDBBtn>
-                        <MDBBtn style={{height : "40px"}} onClick={() => {handleAdd()}} >Save</MDBBtn>
+                        <MDBBtn style={{height : "40px", padding: "2px 15px"}} onClick={() => {handleAdd()}} >Save</MDBBtn>
                         </MDBModalFooter>
                     </MDBModalContent>
                     </MDBModalDialog>
@@ -550,10 +551,10 @@ function Products() {
                           </MDBRow>
                         </MDBModalBody>
                         <MDBModalFooter>
-                        <MDBBtn color='secondary' style={{height : "40px"}} onClick={toggleShowEdit}>
+                        <MDBBtn color='secondary' style={{height : "40px" ,  padding: "2px 15px"}} onClick={toggleShowEdit}>
                             Close
                         </MDBBtn>
-                        <MDBBtn style={{height : "40px"}} onClick={() => {handleUpdate()}}>Save</MDBBtn>
+                        <MDBBtn style={{height : "40px" ,  padding: "2px 15px"}} onClick={() => {handleUpdate()}}>Save</MDBBtn>
                         </MDBModalFooter>
                     </MDBModalContent>
                     </MDBModalDialog>
