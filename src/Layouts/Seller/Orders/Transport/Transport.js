@@ -34,7 +34,7 @@ function Transport() {
               </form>
               </div>
               <MDBRow className="mt-4 ml-1">
-                <MDBCol sm="2" style={{marginLeft : "50px"}}>
+                <MDBCol sm="2">
                   <MDBCardText>Name</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="2">
@@ -54,7 +54,7 @@ function Transport() {
                 </MDBCol>
               </MDBRow>
               <MDBRow className="mt-4 ml-1 pt-4 border-top">
-                <MDBCol sm="2" style={{marginLeft : "50px"}}>
+                <MDBCol sm="2">
                   <MDBCardText>Nguyen van a</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="2">
@@ -71,6 +71,9 @@ function Transport() {
                 </MDBCol>
                 <MDBCol sm="1">
                   <MDBCardText>200000</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="1" style={{marginTop : "-5px", marginLeft : "-15px"}}>
+                  <button type="button" class="btn btn-dark btn-small" name="edit" disabled="" >Received</button>
                 </MDBCol>
               </MDBRow>
             </MDBCardBody>

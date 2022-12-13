@@ -40,6 +40,69 @@ function getProductById(idProduct, setProduct = null) {
     });
 }
 
+function apiCreateProduct(Data) {
+  axios({
+    method: "post",
+    url: `${baseUrl}product/create-product`,
+    data: Data,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+      "Content-Type": "multipart/form-data",
+    },
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      window.location.reload();
+      return data.body;
+    })
+    .then((body) => {
+      console.log(body);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function apiUpdateProduct(Data) {
+  axios({
+    method: "post",
+    url: `${baseUrl}product/update-product`,
+    data: Data,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+      "Content-Type": "multipart/form-data",
+    },
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      window.location.reload();
+      return data.body;
+    })
+    .then((body) => {
+      console.log(body);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getProductByShop(setProduct) {
+  axios({
+    method: "get",
+    url: `${baseUrl}product/get-product`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      setProduct(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 function getAllCategory(setListCategory) {
   axios({
     method: "get",
@@ -99,4 +162,7 @@ export {
   searchProductByKeyword,
   getAllCategory,
   getProductById,
+  getProductByShop,
+  apiCreateProduct,
+  apiUpdateProduct
 };
