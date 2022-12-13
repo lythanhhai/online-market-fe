@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../APIs/auth.api";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
+// Material Dashboard 2 React components
+import { MDBRow } from  "mdb-react-ui-kit";
 function Login() {
   const [data, setData] = useState({
     username: "",
     password: "",
   });
   const [err, setErr] = useState("");
+  const [position, setPosition] = useState("");
+  useEffect(() => {
+    localStorage.setItem("POSITION", position);
+  }, [position]);
+  
   const navigate = useNavigate();
   const handleSignIn = () => {
     login(data, navigate, setErr);
@@ -60,7 +68,24 @@ function Login() {
                     />
                   </div>
                   {err ? <p style={{ color: "red" }}>{err}!!!</p> : null}
-
+                  <MDBRow>
+                    <FormControl fullWidth style={{ padding: "5px 13px" }}>
+                      <InputLabel id="demo-simple-select-label" style={{ marginLeft: "15px" }}>Position</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={position}
+                        label="Position"
+                        sx={{ height: "45px" }}
+                        onChange={(e) => {
+                          setPosition(e.target.value);
+                        }}
+                      >
+                        <MenuItem value={0}>User</MenuItem>
+                        <MenuItem value={1}>Seller</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </MDBRow>
                   <a
                     class="btn btn-main mt-3 btn-block"
                     style={{

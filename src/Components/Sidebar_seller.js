@@ -9,12 +9,17 @@ import Orders from "../Layouts/Seller/Orders/Orders";
 import Ordered from "../Layouts/Seller/Orders/Ordered/Ordered";
 import Transport from "../Layouts/Seller/Orders/Transport/Transport";
 import Received from "../Layouts/Seller/Orders/Received/Received";
-import Customer from "../Layouts/Seller/Customer/Customer";
-import Analytics from "../Layouts/Seller/Analytics/Analytics";
 import Setting from "../Layouts/Seller/Setting/Setting";
+import { logout } from "../APIs/auth.api";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar_Seller() {
 const [item, setItem] = useState('products');
+const navigate = useNavigate();
+  const handleLogout = () => {
+    // alert("a");
+    logout(navigate);
+  };
   return (
     <div class="container-fluid">
     <div class="row">
@@ -48,8 +53,11 @@ const [item, setItem] = useState('products');
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-cog" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" onClick={() => setItem('setting')}>Setting</span></a></li>
-                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-sign-out" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" >Logout</span></a></li>
+                <li class="nav-item"><a class="nav-link text-truncate" style={{ cursor : "pointer"}}><i class="fa fa-sign-out" style={{ marginRight : "15px" }}></i> <span class="d-none d-sm-inline" 
+                    onClick={() => {
+                    handleLogout();
+                    }} >
+                  Logout</span></a></li>
             </ul>
         </div>
         <div class="col pt-2 bg-light">

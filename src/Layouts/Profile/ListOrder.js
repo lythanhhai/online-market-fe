@@ -13,13 +13,14 @@ function ListOrder({ listProduct, name }) {
     });
     setList(arr);
   }, []);
+
   const elemListItemInCart = list?.map((item1, index) => {
     // if (item.products?.length === 0) {
     //   return null;
     // }
     return (
       <tr class="cart_item">
-        <td
+        {/* <td
           class="product-name"
           data-title="Product"
           style={{
@@ -35,7 +36,7 @@ function ListOrder({ listProduct, name }) {
             }
             alt="product-img"
           />
-        </td>
+        </td> */}
         <td
           class="product-name"
           data-title="Product"
@@ -222,7 +223,7 @@ function ListOrder({ listProduct, name }) {
                   >
                     <thead>
                       <tr>
-                        <th class="product-name"></th>
+                        {/* <th class="product-name"></th> */}
                         <th class="product-name">Product</th>
                         <th class="product-name">Shop</th>
                         <th class="product-price">Price</th>

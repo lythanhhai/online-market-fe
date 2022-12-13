@@ -43,7 +43,7 @@ function Header_Seller() {
                 <i class="tf-ion-ios-person mr-3"></i>
               </a>
             </li>
-            <p className="mt-2" style={{ width : "83px"}}>nguyen van a</p>
+            <p className="mt-2" style={{ width : "83px"}}>myshop</p>
         </ul>
       </div>
     </nav>
