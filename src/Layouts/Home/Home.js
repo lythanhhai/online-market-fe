@@ -1,6 +1,6 @@
 import ListProduct from "../../Components/ListProduct";
 
-function Home() {
+function Home({ keyword }) {
   return (
     <div className="home-container">
       <div className="main-slider slider slick-initialized slick-slider">
@@ -78,7 +78,7 @@ function Home() {
         </div>
       </section>
 
-      <ListProduct />
+      <ListProduct keyword={keyword} />
 
       <section class="features border-top">
         <div class="container">

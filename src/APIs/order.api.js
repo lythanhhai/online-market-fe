@@ -34,7 +34,7 @@ function getPayment(setListPayment) {
   })
     .then((res) => res.data)
     .then((data) => {
-      setListStatus(data);
+      setListPayment(data);
     })
     .catch((err) => {
       console.log(err);
@@ -51,7 +51,7 @@ function getOrderTransport(setListOrderTransport) {
   })
     .then((res) => res.data)
     .then((data) => {
-      return res.body;
+      return data.body;
     })
     .then((body) => {
       setListOrderTransport(body);
@@ -71,7 +71,7 @@ function getOrderReceived(setListOrderReceived) {
   })
     .then((res) => res.data)
     .then((data) => {
-      return res.body;
+      return data.body;
     })
     .then((body) => {
       setListOrderReceived(body);
@@ -91,7 +91,7 @@ function getOrderOrdered(setListOrderOrdered) {
   })
     .then((res) => res.data)
     .then((data) => {
-      return res.body;
+      return data.body;
     })
     .then((body) => {
       setListOrderOrdered(body);
@@ -101,10 +101,10 @@ function getOrderOrdered(setListOrderOrdered) {
     });
 }
 
-function getInforOrder(Data) {
+function getInforOrder(Data, setListItem, navigate) {
   axios({
     method: "post",
-    url: `${baseUrl}order/get-infor-order`,
+    url: `${baseUrl}order/get-info-order`,
     data: Data,
     headers: {
       Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
@@ -112,17 +112,26 @@ function getInforOrder(Data) {
   })
     .then((res) => res.data)
     .then((data) => {
-      console.log(data);
+      return data.body;
+    })
+    .then((body) => {
+      if (!body) {
+        alert("error when order");
+        navigate("/cart");
+      } else {
+        setListItem(body);
+        console.log(body);
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-function createOrder(Data) {
+function createOrder(Data, navigate) {
   axios({
     method: "post",
-    url: `${baseUrl}order/create-rder`,
+    url: `${baseUrl}order/create-order`,
     data: Data,
     headers: {
       Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
@@ -131,6 +140,15 @@ function createOrder(Data) {
     .then((res) => res.data)
     .then((data) => {
       console.log(data);
+      return data.body;
+    })
+    .then((body) => {
+      if (body?.length > 0) {
+        alert("Order successfully!");
+        navigate("/cart");
+      } else {
+        console.log(body);
+      }
     })
     .catch((err) => {
       console.log(err);

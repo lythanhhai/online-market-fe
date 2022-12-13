@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteItemInCart } from "../APIs/cart.api";
+import { deleteItemInCart, getItem } from "../APIs/cart.api";
 
-function ModalCart({ listCart }) {
+function ModalCart({ listCart, totalPrice }) {
   const handleDeleteItemInCart = (idItem) => {
     deleteItemInCart(idItem);
   };
@@ -10,18 +10,25 @@ function ModalCart({ listCart }) {
   const handleClickDetailProduct = (idProduct) => {
     navigate(`/detail-product/${idProduct}`);
   };
+
   const elemItem = listCart.map((item, index) => {
     return (
       <div class="media" key={index}>
-        <a href={`/detail-product/${item.product.id}`}>
+        {/* <a href={`/detail-product/${item.product.id}`}>
           <img
             class="media-object img- mr-3"
-            src="assets/images/cart-1.jpg"
+            src={
+              item.urlImgList.length > 0
+                ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`
+                : "assets/images/cart-1.jpg"
+            }
             alt="image"
           />
-        </a>
+        </a> */}
         <div class="media-body">
-          <h6>{item.product.name}</h6>
+          <a href={`/detail-product/${item.product.id}`}>
+            <h6>{item.product.name}</h6>
+          </a>
           <div class="cart-price">
             <span>{item.quantity} x</span>
             <span>{item.product.price}</span>
@@ -46,13 +53,22 @@ function ModalCart({ listCart }) {
       {listCart.length === 0 ? (
         <p className="text-center">Your cart currently empty!!!</p>
       ) : (
-        elemItem
+        <div
+          style={{
+            maxHeight: "300px",
+            overflowY: "scroll",
+            msOverflowStyle: "none",
+            scrollbarWidth: "none" /* Firefox */,
+          }}
+        >
+          {elemItem}
+        </div>
       )}
       <div class="cart-summary">
         {listCart.length === 0 ? null : (
           <div>
             <span class="h6">Total</span>
-            <span class="total-price h6">$1799.00</span>
+            <span class="total-price h6">đ{totalPrice}</span>
           </div>
         )}
 
