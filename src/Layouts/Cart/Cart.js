@@ -34,7 +34,7 @@ function Cart({ setListItemChosen, listItemChosen }) {
     quantity: "",
     itemId: 0,
   });
-  
+
   const handleUpdateCart = (idItem, quantity, typeId) => {
     if (!typeId) {
       typeId = 1;
@@ -95,13 +95,13 @@ function Cart({ setListItemChosen, listItemChosen }) {
         </td>
 
         <td class="product-thumbnail" data-title="Thumbnail">
-          <a href={`/detail-product/${item.product.id}`}>
+          {/* <a href={`/detail-product/${item.product.id}`}>
             <img
               src="assets/images/cart-1.jpg"
               class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
               alt=""
             />
-          </a>
+          </a> */}
         </td>
 
         <td class="product-name" data-title="Product">

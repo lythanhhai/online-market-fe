@@ -139,12 +139,15 @@ function createOrder(Data, navigate) {
   })
     .then((res) => res.data)
     .then((data) => {
+      console.log(data);
       return data.body;
     })
     .then((body) => {
-      if (body.length > 0) {
+      if (body?.length > 0) {
         alert("Order successfully!");
         navigate("/cart");
+      } else {
+        console.log(body);
       }
     })
     .catch((err) => {

@@ -19,18 +19,29 @@ function Checkout({ listItemChosen }) {
     getAddressOrder(setFillInfor);
     // console.log(listItemChosen);
   }, []);
-  useEffect(() => {
-    setDataOrder({
-      ...dataOrder,
-      province: fillInfor.district?.province.province_name,
-      address: fillInfor?.address + ", " + fillInfor.district?.district_name,
-    });
-  }, [fillInfor]);
+  // useEffect(() => {
+  //   setDataOrder({
+  //     ...dataOrder,
+  //     province: fillInfor.district?.province.province_name,
+  //     address: fillInfor?.address + ", " + fillInfor.district?.district_name,
+  //   });
+  // }, [fillInfor]);
   const navigate = useNavigate();
   const handleGetInforOrder = () => {
+    // console.log(dataOrder);
     getInforOrder(dataOrder, setListItem, navigate);
   };
   const handleOrder = () => {
+    let data = {
+      idPayment: 1,
+      listIdItem: listItemChosen,
+      province: fillInfor.district.province.province_name,
+      address: fillInfor.address + ", " + fillInfor.district.district_name,
+      // province: "1",
+      // address: "1",
+    };
+    // console.log(data);
+    // console.log(fillInfor.district.province.province_name);
     createOrder(dataOrder, navigate);
   };
 
