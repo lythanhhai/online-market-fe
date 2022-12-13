@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   deleteItemInCart,
   getItem,
@@ -8,13 +9,16 @@ import {
 import baseUrl from "../../APIs/config";
 import { getAllProduct, getProductById } from "../../APIs/product.api";
 
-function Cart() {
+function Cart({ setListItemChosen, listItemChosen }) {
   const [listCart, setListCart] = useState([]);
   const [listProduct, setListProduct] = useState([]);
+  const [checked, setChecked] = useState(false);
   const [action, setAction] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     getItem(setListCart);
     getAllProduct(setListProduct);
+    setListItemChosen([]);
   }, []);
 
   useEffect(() => {
@@ -30,6 +34,7 @@ function Cart() {
     quantity: "",
     itemId: 0,
   });
+  
   const handleUpdateCart = (idItem, quantity, typeId) => {
     if (!typeId) {
       typeId = 1;
@@ -50,7 +55,9 @@ function Cart() {
     setAction(true);
     deleteItemInCart(idItem);
   };
-
+  // useEffect(() => {
+  //   console.log(listItemChosen);
+  // }, [listItemChosen]);
   const elemListItemInCart = listCart.map((item, index) => {
     let product = listProduct.find((itemProduct, indexProduct) => {
       return itemProduct.productResponse?.id === item.product?.id;
@@ -64,8 +71,31 @@ function Cart() {
           alignItems: "center !important",
         }}
       >
+        <td>
+          {/* {checked ? (
+            <input type="checkbox" checked={checked ? true : false}></input>
+          ) : ( */}
+          <input
+            type="checkbox"
+            checked={listItemChosen.includes(item.id)}
+            onChange={(e) => {
+              let listItem = [...listItemChosen];
+              // alert(e.target.checked);
+              if (!e.target.checked) {
+                listItem = listItem.filter((item1, index1) => {
+                  return item.id != item1;
+                });
+                setListItemChosen(listItem);
+              } else {
+                listItem.push(item.id);
+                setListItemChosen(listItem);
+              }
+            }}
+          ></input>
+        </td>
+
         <td class="product-thumbnail" data-title="Thumbnail">
-          <a href="/product-single">
+          <a href={`/detail-product/${item.product.id}`}>
             <img
               src="assets/images/cart-1.jpg"
               class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
@@ -75,7 +105,9 @@ function Cart() {
         </td>
 
         <td class="product-name" data-title="Product">
-          <a href="#">{item.product?.name}</a>
+          <a href={`/detail-product/${item.product.id}`}>
+            {item.product?.name}
+          </a>
         </td>
 
         <td class="product-price" data-title="Price">
@@ -155,7 +187,7 @@ function Cart() {
             {/* <span class="currencySymbol">
               <pre wp-pre-tag-3=""></pre>
             </span> */}
-            {item?.quantity * item.product?.price}
+            {item?.quantity * item.product?.price}đ
           </span>
         </td>
         <td class="product-remove" data-title="Remove">
@@ -231,6 +263,24 @@ function Cart() {
                   >
                     <thead>
                       <tr>
+                        <th class="product-choose">
+                          <input
+                            type="checkbox"
+                            onChange={(e) => {
+                              // setChecked(e.target.checked);
+                              setChecked(!checked);
+                              if (e.target.checked) {
+                                let listItem = listCart.map((item, index) => {
+                                  return item.id;
+                                });
+                                setListItemChosen(listItem);
+                              } else {
+                                setListItemChosen([]);
+                              }
+                              // alert(e.target.checked);
+                            }}
+                          ></input>
+                        </th>
                         <th class="product-thumbnail"> </th>
                         <th class="product-name">Product</th>
                         <th class="product-price">Price</th>
@@ -262,17 +312,22 @@ function Cart() {
                             >
                               Apply coupon
                             </button>
-                            {/* <span class="float-right mt-3 mt-lg-0">
-                              <button
-                                type="button"
-                                class="btn btn-dark btn-small"
-                                name="update_cart"
-                                value="Update cart"
-                                disabled=""
-                              >
-                                Update cart
-                              </button>
-                            </span> */}
+                            {listItemChosen.length > 0 ? (
+                              <span class="float-right mt-3 mt-lg-0">
+                                <button
+                                  type="button"
+                                  class="btn btn-main btn-small"
+                                  name="update_cart"
+                                  value="Update cart"
+                                  disabled=""
+                                  onClick={() => {
+                                    navigate("/checkout");
+                                  }}
+                                >
+                                  Buy
+                                </button>
+                              </span>
+                            ) : null}
                           </div>
                           <input
                             type="hidden"
@@ -293,7 +348,7 @@ function Cart() {
               </div>
             </div>
           </div>
-          <div class="row justify-content-end">
+          {/* <div class="row justify-content-end">
             <div class="col-lg-4">
               <div class="cart-info card p-4 mt-4">
                 <h4 class="mb-4">Cart totals</h4>
@@ -316,7 +371,7 @@ function Cart() {
                 </a>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

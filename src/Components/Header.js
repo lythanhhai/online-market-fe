@@ -6,10 +6,15 @@ import ModalCart from "./ModalCart";
 import Sidebar from "./Sidebar";
 import { getLocalStorage, STORAGE } from "../Utils/storage";
 import RequireLogin from "../Layouts/Cart/RequireLogin";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getItem } from "../APIs/cart.api";
 import { logout } from "../APIs/auth.api";
-function Header() {
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import { height } from "@mui/system";
+
+function Header({ keyword, setKeyword }) {
   const [listCart, setListCart] = useState([]);
   useEffect(() => {
     getItem(setListCart);
@@ -19,9 +24,35 @@ function Header() {
     // alert("a");
     logout(navigate);
   };
+  const inputSearch = useRef(null);
+  const [totalPrice, setTotalPrice] = useState(0);
+  useEffect(() => {
+    let price = 0;
+    listCart.forEach((item) => {
+      price = item?.quantity * item.product?.price + price;
+    });
+    setTotalPrice(price);
+  }, [listCart]);
+  const onButtonClickSearch = () => {
+    inputSearch.current.focus();
+  };
+  const [heightScroll, setHeightScroll] = useState(false);
+  useEffect(() => {
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 70) {
+        setHeightScroll(true);
+      } else {
+        setHeightScroll(false);
+      }
+    });
+  });
   return (
     <nav
-      class="navbar navbar-expand-lg navbar-light bg-white w-100 navigation fixed-top"
+      class={
+        heightScroll
+          ? "navbar navbar-expand-lg navbar-light bg-white w-100 navigation fixed-top h-15"
+          : "navbar navbar-expand-lg navbar-light bg-white w-100 navigation"
+      }
       id="navbar"
     >
       <div class="container">
@@ -41,15 +72,41 @@ function Header() {
         </button>
         {/* <Sidebar /> */}
 
+        <input
+          type="search"
+          ref={inputSearch}
+          style={{
+            height: "40px",
+            width: "40%",
+            borderRadius: 30,
+            // border: "none",
+            outline: "none",
+            padding: "4px 10px 4px",
+          }}
+          onChange={(e) => {
+            setKeyword(e.target.value);
+          }}
+          placeholder="Enter name product which you want..."
+        />
         <ul class="top-menu list-inline mb-0 d-none d-lg-block" id="top-menu">
           <li class="list-inline-item">
-            <a href="#" class="search_toggle" id="search-icon">
+            <a
+              class="search_toggle"
+              id="search-icon"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                // alert("a");
+                onButtonClickSearch();
+              }}
+            >
               <i class="tf-ion-android-search"></i>
             </a>
           </li>
           <li class="dropdown cart-nav dropdown-slide list-inline-item">
             <a
-              href="#"
+              href="/cart"
               class="dropdown-toggle cart-icon"
               // data-toggle="dropdown"
               // data-hover="dropdown"
@@ -57,7 +114,7 @@ function Header() {
               <i class="tf-ion-android-cart"></i>
             </a>
             {getLocalStorage(STORAGE.USER_TOKEN) ? (
-              <ModalCart listCart={listCart} />
+              <ModalCart listCart={listCart} totalPrice={totalPrice} />
             ) : (
               <RequireLogin />
             )}
@@ -80,8 +137,8 @@ function Header() {
               <a class="dropdown-item" href="cart">
                 View cart
               </a>
-              <a class="dropdown-item" href="#">
-                View history
+              <a class="dropdown-item" href="/my_account">
+                My Account
               </a>
               <a
                 class="dropdown-item"
@@ -128,4 +185,35 @@ export default Header;
             
             </div>
           </li> */
+  //   <form
+  //   style={{
+  //     height: "0px",
+  //     width: "400px",
+  //     position: "absolute",
+  //     top: 5,
+  //     left: "35%",
+  //     transform: "translate(-5, -100%)",
+  //   }}
+  // >
+  //   <TextField
+  //     // id="search-bar"
+  //     ref={inputSearch}
+  //     className="text h-3"
+  //     onChange={(e) => {
+  //       setKeyword(e.target.value);
+  //     }}
+  //     // label="Enter name product which you want"
+  //     variant="outlined"
+  //     placeholder="Enter name product which you want..."
+  //     size="small"
+  //     style={{
+  //       height: "100%",
+  //       width: "100%",
+  //       borderRadius: 30,
+  //     }}
+  //   />
+  //   <IconButton type="submit" aria-label="search">
+  //     <SearchIcon style={{ fill: "blue" }} />
+  //   </IconButton>
+  // </form>
 }

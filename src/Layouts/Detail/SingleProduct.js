@@ -25,8 +25,16 @@ function SingleProduct() {
     );
   });
 
-  const handleAddToCart = () => {
-    addItemToCart(Data);
+  const handleAddToCart = (lengthType) => {
+    if (lengthType > 0 && !Data.typeId) {
+      addItemToCart({
+        productId: parseInt(params.productId),
+        quantity: 1,
+        typeId: 1,
+      });
+    } else {
+      addItemToCart(Data);
+    }
     // console.log(Data);
   };
   return (
@@ -179,7 +187,7 @@ function SingleProduct() {
                       style={{ cursor: "pointer" }}
                       class="btn btn-main btn-small"
                       onClick={() => {
-                        handleAddToCart();
+                        handleAddToCart(product.typeList?.length);
                       }}
                     >
                       Add to cart

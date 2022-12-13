@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteItemInCart } from "../APIs/cart.api";
+import { deleteItemInCart, getItem } from "../APIs/cart.api";
 
-function ModalCart({ listCart }) {
+function ModalCart({ listCart, totalPrice }) {
   const handleDeleteItemInCart = (idItem) => {
     deleteItemInCart(idItem);
   };
@@ -10,6 +10,7 @@ function ModalCart({ listCart }) {
   const handleClickDetailProduct = (idProduct) => {
     navigate(`/detail-product/${idProduct}`);
   };
+
   const elemItem = listCart.map((item, index) => {
     return (
       <div class="media" key={index}>
@@ -46,13 +47,20 @@ function ModalCart({ listCart }) {
       {listCart.length === 0 ? (
         <p className="text-center">Your cart currently empty!!!</p>
       ) : (
-        elemItem
+        <div
+          style={{
+            maxHeight: "300px",
+            overflowY: "scroll",
+          }}
+        >
+          {elemItem}
+        </div>
       )}
       <div class="cart-summary">
         {listCart.length === 0 ? null : (
           <div>
             <span class="h6">Total</span>
-            <span class="total-price h6">$1799.00</span>
+            <span class="total-price h6">đ{totalPrice}</span>
           </div>
         )}
 

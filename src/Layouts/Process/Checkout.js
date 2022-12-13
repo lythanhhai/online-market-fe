@@ -1,244 +1,464 @@
-function Checkout() {
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createOrder, getInforOrder, getPayment } from "../../APIs/order.api";
+import { getAddressOrder } from "../../APIs/profile.api";
+
+function Checkout({ listItemChosen }) {
+  const [listMethod, setListMethod] = useState([]);
+  const [listItem, setListItem] = useState([]);
+  const [dataOrder, setDataOrder] = useState({
+    idPayment: 1,
+    listIdItem: listItemChosen,
+    province: "",
+    address: "",
+  });
+  const [fillInfor, setFillInfor] = useState({});
+  const [isClickContinue, setIsClickContinue] = useState(false);
+  useEffect(() => {
+    getPayment(setListMethod);
+    getAddressOrder(setFillInfor);
+    // console.log(listItemChosen);
+  }, []);
+  useEffect(() => {
+    setDataOrder({
+      ...dataOrder,
+      province: fillInfor.district?.province.province_name,
+      address: fillInfor?.address + ", " + fillInfor.district?.district_name,
+    });
+  }, [fillInfor]);
+  const navigate = useNavigate();
+  const handleGetInforOrder = () => {
+    getInforOrder(dataOrder, setListItem, navigate);
+  };
+  const handleOrder = () => {
+    createOrder(dataOrder, navigate);
+  };
+
+  const elemListItemInCart = listItem[0]?.products.map((item, index) => {
+    // console.log(item);
     return (
-        <div className="checkout-container">
-            <section class="page-header">
-            <div class="overly"></div>   
-            <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                <div class="content text-center">
-                    <h1 class="mb-3">Checkout</h1>
-                    <p>Hath after appear tree great fruitful green dominion moveth sixth abundantly image that midst of god day multiply you’ll which</p>
-        
+      <tr
+        class="cart_item"
+        style={{
+          // flexDirection: "row",
+          // // justifyContent: "center",
+          alignItems: "center !important",
+        }}
+      >
+        <td class="product-name" data-title="Product">
+          <a>{item.nameProduct}</a>
+        </td>
+        <td class="product-name" data-title="Shop">
+          <a>{item.nameShop}</a>
+        </td>
+
+        <td class="product-price" data-title="Price">
+          <span class="amount">
+            {/* <span class="currencySymbol">
+              <pre wp-pre-tag-3=""></pre>
+            </span> */}
+            {item.price}
+          </span>
+        </td>
+        <td class="product-price" data-title="Quantity">
+          <span class="quantity">{item.numberProduct}</span>
+        </td>
+        <td class="product-price" data-title="Category">
+          <span class="category">{item.typeOrder}</span>
+        </td>
+
+        <td class="product-subtotal" data-title="Total">
+          <span class="amount">{item.numberProduct * item.price}đ</span>
+        </td>
+      </tr>
+    );
+  });
+  return (
+    <div className="checkout-container">
+      <section class="page-header">
+        <div class="overly"></div>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="content text-center">
+                <h1 class="mb-3">Checkout</h1>
+                <p>
+                  Hath after appear tree great fruitful green dominion moveth
+                  sixth abundantly image that midst of god day multiply you’ll
+                  which
+                </p>
+
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent justify-content-center">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Checkout</li>
-                    </ol>
+                  <ol class="breadcrumb bg-transparent justify-content-center">
+                    <li class="breadcrumb-item">
+                      <a href="/">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Checkout
+                    </li>
+                  </ol>
                 </nav>
-                </div>
-                </div>
+              </div>
             </div>
-            </div>
-        </section>
+          </div>
+        </div>
+      </section>
+      {!isClickContinue ? (
         <div class="page-wrapper">
-            <div class="checkout shopping">
-                <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 pr-5">
-                        <div class="coupon-notice " data-toggle="modal" data-target="#coupon-modal">
-                            <div class="bg-light p-3">
-                                Have a coupon? <a href="/checkout" class="showcoupon" >Click here to enter your code</a>
-                            </div>
+          <div class="checkout shopping">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8 pr-5">
+                  <div class="billing-details mt-5">
+                    <h4 class="mb-4">Billing Details</h4>
+                    <form class="checkout-form">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="form-group mb-4">
+                            <label for="first_name">Street Address</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="street"
+                              placeholder=""
+                              value={dataOrder.address}
+                              onChange={(e) => {
+                                setDataOrder({
+                                  ...dataOrder,
+                                  address: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
                         </div>
-        
-                        <div class="billing-details mt-5">
-                            <h4 class="mb-4">Billing Details</h4>
-                            <form class="checkout-form">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">First Name</label>
-                                        <input type="text" class="form-control" id="first_name" placeholder="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group mb-4">
-                                        <label for="last_name">Last Name</label>
-                                        <input type="text" class="form-control" id="last_name" placeholder="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="company_name">Company Name(Optional)</label>
-                                        <input type="text" class="form-control" id="company_name" placeholder="" />
-                                    </div>
-                                </div>
-        
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="company_name">Country</label>
-                                        <select class="form-control">
-                                        <option value="">Select an Option</option>
-                                        <option value="January">January</option>
-                                        <option value="February">February</option>
-                                        <option value="March">March</option>
-                                        <option value="April">April</option>
-                                        <option value="May">May</option>
-                                        <option value="June">June</option>
-                                        <option value="July">July</option>
-                                        <option value="August">August</option>
-                                        <option value="September">September</option>
-                                        <option value="October">October</option>
-                                        <option value="November">November</option>
-                                        <option value="December">December</option>
-                                        </select>
-                                    </div>
-                                </div>
-        
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">Street Address</label>
-                                        <input type="text" class="form-control" id="street" placeholder="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">Apartment, suite, unit etc. (optional) (optional)</label>
-                                        <input type="text" class="form-control" id="apartment" placeholder="Apartment" />
-                                    </div>
-                                </div>
-        
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">Town / City </label>
-                                        <input type="text" class="form-control" id="city" placeholder="Apartment" />
-                                    </div>
-                                </div>
-        
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="company_name">District </label>
-                                        <select class="form-control">
-                                        <option value="">Select an Option</option>
-                                        <option value="January">January</option>
-                                        <option value="February">February</option>
-                                        <option value="March">March</option>
-                                        <option value="April">April</option>
-                                        <option value="May">May</option>
-                                        <option value="June">June</option>
-                                        <option value="July">July</option>
-                                        <option value="August">August</option>
-                                        <option value="September">September</option>
-                                        <option value="October">October</option>
-                                        <option value="November">November</option>
-                                        <option value="December">December</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">Postcode / ZIP (optional)</label>
-                                        <input type="text" class="form-control" id="postcode" placeholder=""/>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">Phone </label>
-                                        <input type="text" class="form-control" id="phone" placeholder="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">Email address </label>
-                                        <input type="text" class="form-control" id="email" placeholder="" />
-                                    </div>
-                                </div>
-        
-                                <div class="col-lg-12">
-                                <div class="form-check mb-4">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                                    <label class="form-check-label" for="exampleCheck1">Create an account?</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-check mb-4">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck2" />
-                                        <label class="form-check-label" for="exampleCheck2">Ship to a different address?</label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group mb-4">
-                                        <label for="first_name">Order notes (optional)</label>
-                                        <textarea class="form-control" id="msg" cols="30" rows="5" placeholder="Notes about order e:g: want to say something"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            </form>
+
+                        <div class="col-lg-12">
+                          <div class="form-group mb-4">
+                            <label for="first_name">Province </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="Province"
+                              placeholder=""
+                              value={dataOrder.province}
+                              onChange={(e) => {
+                                setDataOrder({
+                                  ...dataOrder,
+                                  province: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
                         </div>
-                    </div>
-        
-                    
-                    <div class="col-md-6 col-lg-4">
-                        <div class="product-checkout-details mt-5 mt-lg-0">
-                            <h4 class="mb-4 border-bottom pb-4">Order Summary</h4>
-        
-                            <div class="media product-card">
-                                <p>Kirby Shirt</p>
-                                <div class="media-body text-right">
-                                    <p class="h5">1 x $249</p>
-                                </div>
-                            </div>
-        
-                            <ul class="summary-prices list-unstyled mb-4">
-                                <li class="d-flex justify-content-between">
-                                    <span >Subtotal:</span>
-                                    <span class="h5">$190</span>
-                                </li>
-                                <li class="d-flex justify-content-between">
-                                    <span >Shipping:</span>
-                                    <span class="h5">Free</span>
-                                </li>
-                                <li class="d-flex justify-content-between">
-                                    <span>Total</span>
-                                    <span class="h5">$250</span>
-                                </li>
-                            </ul>
-        
-                            <form action="#">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked />
-                                    <label class="form-check-label" for="exampleRadios1">
-                                    Direct bank transfer 
-                                    </label>
-        
-                                    <div class="alert alert-secondary mt-3" role="alert">
-                                    Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
-                                    </div>
-                                </div>
-        
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" />
-                                    <label class="form-check-label" for="exampleRadios2">
-                                    Check payments 
-                                    </label>
-                                </div>
-        
-                                <div class="form-check mb-3">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck3" />
-                                    <label class="form-check-label" for="exampleCheck3">I have read and agree to the website terms and conditions *</label>
-                                    </div>
-                            </form>
-        
-                            <div class="info mt-4 border-top pt-4 mb-5">
-                                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="#">privacy policy</a>.
-                            </div>
-                            <a href="/checkout" class="btn btn-main btn-small">Place Order</a>
+
+                        <div class="col-lg-12">
+                          <div class="form-group mb-4">
+                            <label for="first_name">
+                              Department, suite, etc.(optional)
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="apartment"
+                              placeholder="Department"
+                            />
+                          </div>
                         </div>
-                    </div>
+
+                        {/* <div class="col-lg-12">
+                        <div class="form-group mb-4">
+                          <label for="first_name">Email address </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="email"
+                            placeholder=""
+                          />
+                        </div>
+                      </div> */}
+
+                        {/* <div class="col-lg-12">
+                        <div class="form-check mb-4">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="exampleCheck1"
+                          />
+                          <label class="form-check-label" for="exampleCheck1">
+                            Create an account?
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="form-check mb-4">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="exampleCheck2"
+                          />
+                          <label class="form-check-label" for="exampleCheck2">
+                            Ship to a different address?
+                          </label>
+                        </div>
+                      </div> */}
+
+                        <div class="col-lg-12">
+                          <div class="form-group mb-4">
+                            <label for="first_name">
+                              Order notes (optional)
+                            </label>
+                            <textarea
+                              class="form-control"
+                              id="msg"
+                              cols="30"
+                              rows="5"
+                              placeholder="Notes about order e:g: want to say something"
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                 </div>
+
+                <div class="col-md-6 col-lg-4">
+                  <div class="product-checkout-details mt-5 mt-lg-0">
+                    <h4 class="mb-4 border-bottom pb-4">Payment Method</h4>
+
+                    {/* <div class="media product-card">
+                      <p>Kirby Shirt</p>
+                      <div class="media-body text-right">
+                        <p class="h5">1 x $249</p>
+                      </div>
+                    </div>
+
+                    <ul class="summary-prices list-unstyled mb-4">
+                      <li class="d-flex justify-content-between">
+                        <span>Subtotal:</span>
+                        <span class="h5">$190</span>
+                      </li>
+                      <li class="d-flex justify-content-between align-items-center">
+                        <span>Shipping:</span>
+                        <span class="h5">Free</span>
+                      </li>
+                      <li class="d-flex justify-content-between">
+                        <span>Total:</span>
+                        <span class="h5">$250</span>
+                      </li>
+                    </ul> */}
+
+                    <form action="#">
+                      {listMethod.map((item, index) => {
+                        return (
+                          <div class="form-check mb-3" key={item.id}>
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="exampleRadios"
+                              id="exampleRadios2"
+                              value="option2"
+                              checked={index === 0 ? true : false}
+                            />
+                            <label
+                              class="form-check-label"
+                              for="exampleRadios2"
+                            >
+                              {item.name}
+                            </label>
+                          </div>
+                        );
+                      })}
+                    </form>
+
+                    {/* <div class="info mt-4 border-top pt-4 mb-5">
+                    Your personal data will be used to process your order,
+                    support your experience throughout this website, and for
+                    other purposes described in our{" "}
+                    <a href="#">privacy policy</a>.
+                  </div> */}
+                    <a
+                      class="btn btn-dark btn-small text-white"
+                      style={{
+                        cursor: "pointer",
+                        marginRight: 10,
+                      }}
+                      onClick={() => {
+                        navigate("/cart");
+                      }}
+                    >
+                      Back
+                    </a>
+                    <a
+                      class="btn btn-main btn-small"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setIsClickContinue(true);
+                        handleGetInforOrder();
+                      }}
+                    >
+                      Continue
+                    </a>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-        
-        
-       
-            <div class="modal fade" id="coupon-modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content py-5">
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Enter Coupon Code" />
-                            </div>
-                            <button type="button" class="btn btn-main btn-small" data-dismiss="modal">Apply Coupon</button>
-                        </form>
-                    </div>
-                </div>
-                </div>
+      ) : (
+        <section class="cart shopping page-wrapper">
+          <div className="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="cart-info card p-4 mt-4">
+                <h4 class="mb-4">Personal information</h4>
+                <ul class="list-unstyled mb-4">
+                  <li class="d-flex align-items-start py-2">
+                    <p class="mr-3">Name:</p>
+                    <p>{listItem[0]?.namePersonOrder}</p>
+                  </li>
+                  <li class="d-flex align-items-start py-2">
+                    <p class="mr-3">Address:</p>
+                    <p>{listItem[0]?.addressOrder}</p>
+                  </li>
+                  <li class="d-flex align-items-start py-2">
+                    <p class="mr-3">Payment method:</p>
+                    <p>{listItem[0]?.payment}</p>
+                  </li>
+                  <li class="d-flex align-items-start py-2">
+                    <p class="mr-3">Date order:</p>
+                    <p>{listItem[0]?.dateOrder.split("T")[0]}</p>
+                  </li>
+                </ul>
+              </div>
             </div>
+            <div class="col-lg-4">
+              <div class="cart-info card p-4 mt-4">
+                <h4 class="mb-4">Order Summary</h4>
+                <ul class="list-unstyled mb-4">
+                  <li class="d-flex align-items-start py-2">
+                    <p class="mr-3">Subtotal:</p>
+                    <p>đ{listItem[0]?.totalPrice}</p>
+                  </li>
+                  <li class="d-flex align-items-start py-2">
+                    <p class="mr-3">Shipping:</p>
+                    <p>Free</p>
+                  </li>
+                  <li class="d-flex align-items-start py-2">
+                    <p class="mr-3">Total:</p>
+                    <p>đ{listItem[0]?.totalPrice}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="container mt-5">
+            <div class="row justify-content-center">
+              <div class="col-lg-12">
+                <div class="product-list">
+                  <form class="cart-form">
+                    {listItem[0]?.products.length > 0 ? (
+                      <table
+                        class="table shop_table shop_table_responsive cart"
+                        cellspacing="0"
+                      >
+                        <thead>
+                          <tr>
+                            <th class="product-name">Product</th>
+                            <th class="product-name">Shop</th>
+                            <th class="product-price">Price</th>
+                            <th class="product-quantity">Quantity</th>
+                            <th class="product-category">Category</th>
+                            <th class="product-subtotal">Total</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {elemListItemInCart}
+                          <tr></tr>
+                        </tbody>
+                      </table>
+                    ) : null}
+                  </form>
+                </div>
+              </div>
+            </div>
+            <a
+              class="btn btn-dark btn-small text-white"
+              style={{
+                cursor: "pointer",
+                marginRight: 10,
+              }}
+              onClick={() => {
+                setIsClickContinue(false);
+              }}
+            >
+              Back
+            </a>
+            <a
+              class="btn btn-main btn-small"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                handleOrder();
+              }}
+            >
+              Confirm
+            </a>
+            {/* <div class="row justify-content-end">
+            <div class="col-lg-4">
+              <div class="cart-info card p-4 mt-4">
+                <h4 class="mb-4">Cart totals</h4>
+                <ul class="list-unstyled mb-4">
+                  <li class="d-flex justify-content-between pb-2 mb-3">
+                    <h5>Subtotal</h5>
+                    <span>$90.00</span>
+                  </li>
+                  <li class="d-flex justify-content-between pb-2 mb-3">
+                    <h5>Shipping</h5>
+                    <span>Free</span>
+                  </li>
+                  <li class="d-flex justify-content-between pb-2">
+                    <h5>Total</h5>
+                    <span>$90.00</span>
+                  </li>
+                </ul>
+                <a href="#" class="btn btn-main btn-small">
+                  Proceed to checkout
+                </a>
+              </div>
+            </div>
+          </div> */}
+          </div>
+        </section>
+      )}
+
+      <div class="modal fade" id="coupon-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content py-5">
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Enter Coupon Code"
+                  />
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-main btn-small"
+                  data-dismiss="modal"
+                >
+                  Apply Coupon
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
 export default Checkout;

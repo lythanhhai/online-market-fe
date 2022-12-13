@@ -7,7 +7,7 @@ import {
   searchProductByCategory,
 } from "../APIs/product.api";
 
-function ListProduct() {
+function ListProduct({ keyword }) {
   const itemEachPage = 6;
   // const [listProduct, setListProduct] = useState([
   //   1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7,
@@ -24,21 +24,26 @@ function ListProduct() {
   }, []);
 
   useEffect(() => {
+    setCurrentPage(1);
     if (typeCategory == 0) {
       getAllProduct(setListProduct);
     } else {
       searchProductByCategory(typeCategory, setListProduct);
     }
-  }, [typeCategory]);
+  }, [typeCategory, keyword]);
 
   useEffect(() => {
+    let filterProduct = listProduct.filter((item) => {
+      let copyItem = item.productResponse.name.toLowerCase();
+      return copyItem.includes(keyword.toLowerCase());
+    });
     let arr = [];
     let arr1 = [];
-    for (let i = 1; i <= Math.ceil(listProduct.length / itemEachPage); i++) {
+    for (let i = 1; i <= Math.ceil(filterProduct.length / itemEachPage); i++) {
       arr.push(i);
     }
 
-    arr1 = listProduct.slice(
+    arr1 = filterProduct.slice(
       (currentPage - 1) * itemEachPage,
       currentPage * itemEachPage
     );
