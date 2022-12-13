@@ -24,9 +24,12 @@ import NotFound from "./Components/NotFound";
 import Seller from "./Layouts/Seller/Seller";
 import { useLocation } from "react-router-dom";
 import PermanentDrawerLeft from "./Layouts/Profile/SideBar";
+import { useState } from "react";
 
 function App() {
   const location = useLocation();
+  const [keyword, setKeyword] = useState("");
+  const [listItemChosen, setListItemChosen] = useState([]);
   return (
     <div className="App">
       <div className="position-relative">
@@ -37,19 +40,36 @@ function App() {
         location.pathname !== "/my_account" ? (
           <>
             {" "}
-            <Header></Header>{" "}
+            <Header setKeyword={setKeyword} keyword={keyword}></Header>{" "}
           </>
         ) : (
           <></>
         )}
         <Routes>
           <Route element={<PrivateRoutes />}>
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/checkout"
+              element={
+                listItemChosen.length > 0 ? (
+                  <Checkout listItemChosen={listItemChosen} />
+                ) : (
+                  <Navigate to="/cart" />
+                )
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  setListItemChosen={setListItemChosen}
+                  listItemChosen={listItemChosen}
+                />
+              }
+            />
             <Route path="/my_account" element={<PermanentDrawerLeft />} />
           </Route>
-          <Route path="/" element={<Home />} />
-          <Route path="/Home" element={<Home />}></Route>
+          <Route path="/" element={<Home keyword={keyword} />} />
+          <Route path="/Home" element={<Home keyword={keyword} />}></Route>
           <Route
             // exact
             path="/detail-product/:productId"

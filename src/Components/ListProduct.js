@@ -7,7 +7,7 @@ import {
   searchProductByCategory,
 } from "../APIs/product.api";
 
-function ListProduct() {
+function ListProduct({ keyword }) {
   const itemEachPage = 6;
   // const [listProduct, setListProduct] = useState([
   //   1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7,
@@ -24,21 +24,26 @@ function ListProduct() {
   }, []);
 
   useEffect(() => {
+    setCurrentPage(1);
     if (typeCategory == 0) {
       getAllProduct(setListProduct);
     } else {
       searchProductByCategory(typeCategory, setListProduct);
     }
-  }, [typeCategory]);
+  }, [typeCategory, keyword]);
 
   useEffect(() => {
+    let filterProduct = listProduct.filter((item) => {
+      let copyItem = item.productResponse.name.toLowerCase();
+      return copyItem.includes(keyword.toLowerCase());
+    });
     let arr = [];
     let arr1 = [];
-    for (let i = 1; i <= Math.ceil(listProduct.length / itemEachPage); i++) {
+    for (let i = 1; i <= Math.ceil(filterProduct.length / itemEachPage); i++) {
       arr.push(i);
     }
 
-    arr1 = listProduct.slice(
+    arr1 = filterProduct.slice(
       (currentPage - 1) * itemEachPage,
       currentPage * itemEachPage
     );
@@ -65,11 +70,11 @@ function ListProduct() {
     navigate(`/detail-product/${idProduct}`);
   };
   const handleAddToCart = (productId, existType) => {
-    if (existType > 0) {
+    if (existType.length > 0) {
       addItemToCart({
         productId: productId,
         quantity: 1,
-        typeId: 1,
+        typeId: existType[0]?.id,
       });
     } else {
       addItemToCart({
@@ -126,7 +131,7 @@ function ListProduct() {
           <div class="product-hover-overlay">
             <a
               onClick={() => {
-                handleAddToCart(item.productResponse.id, item.typeList.length);
+                handleAddToCart(item.productResponse.id, item.typeList);
               }}
             >
               <i class="tf-ion-android-cart text-white"></i>
@@ -138,7 +143,16 @@ function ListProduct() {
 
           <div class="product-info">
             <h2 class="product-title h5 mb-0">
-              <a href="/single-product">{item.productResponse.name}</a>
+              <a
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  handleClickDetailProduct(item.productResponse.id);
+                }}
+              >
+                {item.productResponse.name}
+              </a>
             </h2>
             <span class="price">${item.productResponse.price}</span>
           </div>
@@ -430,7 +444,7 @@ function ListProduct() {
               </button>
             </form>
 
-            <section class="widget widget-popular mb-5">
+            {/* <section class="widget widget-popular mb-5">
               <h3 class="widget-title mb-4 h4">Popular Products</h3>
               <a class="popular-products-item media" href="/single-product">
                 <img
@@ -477,7 +491,7 @@ function ListProduct() {
                   <span class="price">$45</span>
                 </div>
               </a>
-            </section>
+            </section> */}
           </div>
         </div>
       </div>

@@ -25,8 +25,16 @@ function SingleProduct() {
     );
   });
 
-  const handleAddToCart = () => {
-    addItemToCart(Data);
+  const handleAddToCart = (lengthType) => {
+    if (lengthType.length > 0 && !Data.typeId) {
+      addItemToCart({
+        productId: parseInt(params.productId),
+        quantity: Data.quantity,
+        typeId: lengthType[0]?.id,
+      });
+    } else {
+      addItemToCart(Data);
+    }
     // console.log(Data);
   };
   return (
@@ -77,14 +85,23 @@ function SingleProduct() {
                   id="single-product-slider"
                 >
                   <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <img
-                        src="assets/images/product-3.jpg"
-                        alt=""
-                        class="img-fluid"
-                      />
-                    </div>
-                    <div class="carousel-item">
+                    {product.urlImgList?.map((item, index) => {
+                      return (
+                        <div class="carousel-item active">
+                          <img
+                            src={
+                              product.urlImgList.length > 0
+                                ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${product.urlImgList[0].url}`
+                                : "assets/images/product-2.jpg"
+                            }
+                            alt="err"
+                            class="img-fluid"
+                          />
+                        </div>
+                      );
+                    })}
+
+                    {/* <div class="carousel-item">
                       <img
                         src="assets/images/product-2.jpg"
                         alt=""
@@ -97,22 +114,30 @@ function SingleProduct() {
                         alt=""
                         class="img-fluid"
                       />
-                    </div>
+                    </div> */}
                   </div>
 
                   <ol class="carousel-indicators">
-                    <li
-                      data-target="#single-product-slider"
-                      data-slide-to="0"
-                      class="active"
-                    >
-                      <img
-                        src="assets/images/product-3.jpg"
-                        alt=""
-                        class="img-fluid"
-                      />
-                    </li>
-                    <li data-target="#single-product-slider" data-slide-to="1">
+                    {product.urlImgList?.map((item, index) => {
+                      return (
+                        <li
+                          data-target="#single-product-slider"
+                          data-slide-to="0"
+                          class="active"
+                        >
+                          <img
+                            src={
+                              product.urlImgList.length > 0
+                                ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${product.urlImgList[0].url}`
+                                : "assets/images/product-2.jpg"
+                            }
+                            alt="err"
+                            class="img-fluid"
+                          />
+                        </li>
+                      );
+                    })}
+                    {/* <li data-target="#single-product-slider" data-slide-to="1">
                       <img
                         src="assets/images/product-2.jpg"
                         alt=""
@@ -125,7 +150,7 @@ function SingleProduct() {
                         alt=""
                         class="img-fluid"
                       />
-                    </li>
+                    </li> */}
                   </ol>
                 </div>
               </div>
@@ -135,7 +160,10 @@ function SingleProduct() {
               <div class="single-product-details mt-5 mt-lg-0">
                 <h2>{product.productResponse?.name}</h2>
                 <div class="sku_wrapper mb-4">
-                  SKU: <span class="text-muted">AB1563456789 </span>
+                  Shop:{" "}
+                  <span class="text-muted">
+                    {product.productResponse?.nameShop}{" "}
+                  </span>
                 </div>
 
                 <hr />
@@ -179,7 +207,7 @@ function SingleProduct() {
                       style={{ cursor: "pointer" }}
                       class="btn btn-main btn-small"
                       onClick={() => {
-                        handleAddToCart();
+                        handleAddToCart(product.typeList);
                       }}
                     >
                       Add to cart
@@ -267,7 +295,7 @@ function SingleProduct() {
             </div>
           </div>
 
-          <div class="row">
+          {/* <div class="row">
             <div class="col-lg-12">
               <nav class="product-info-tabs wc-tabs mt-5 mb-5">
                 <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
@@ -496,11 +524,11 @@ function SingleProduct() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
-      <section class="products related-products section">
+      {/* <section class="products related-products section">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-6">
@@ -664,7 +692,7 @@ function SingleProduct() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
