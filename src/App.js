@@ -25,6 +25,8 @@ import Seller from "./Layouts/Seller/Seller";
 import { useLocation } from "react-router-dom";
 import PermanentDrawerLeft from "./Layouts/Profile/SideBar";
 import { useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   const location = useLocation();
@@ -109,6 +111,7 @@ function App() {
           <></>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 }

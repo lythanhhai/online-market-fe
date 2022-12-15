@@ -18,8 +18,10 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 import { getDistrict, getProfile, updateProfile } from "../../APIs/profile.api";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function ProfilePage() {
+  const notify = (value) => toast(value);
   const [listDictrict, setListDistrict] = useState([]);
   const [currentProfile, setCurrentProfile] = useState({});
   const [dataProfile, setDataProfile] = useState({
@@ -29,6 +31,18 @@ export default function ProfilePage() {
     address: "",
     district_id: 0,
   });
+  const [errBirthDay, setErrBirthDay] = useState("");
+  const validateBirthDay = (value) => {
+    // if (
+    //   !"^(0[1-9]|1[012])[-/.](0[1-9]|[12][0-9]|3[01])[-/.](19|20)\\d\\d$".test(
+    //     value
+    //   )
+    // ) {
+    //   setErrBirthDay("Please choose valid birthday");
+    // } else {
+    //   setErrBirthDay("");
+    // }
+  };
   useEffect(() => {
     getDistrict(setListDistrict);
     getProfile(setCurrentProfile);
@@ -44,7 +58,9 @@ export default function ProfilePage() {
   }, [currentProfile]);
   const handleUpdateProfile = () => {
     // console.log(dataProfile);
-    updateProfile(dataProfile);
+    if (!errBirthDay) {
+      updateProfile(dataProfile, notify);
+    }
   };
   const elemDistrict = listDictrict?.map((item, index) => {
     if (index === 0) {
@@ -140,11 +156,15 @@ export default function ProfilePage() {
                           ...dataProfile,
                           birthDate: e.target.value,
                         });
+                        validateBirthDay(e.target.value);
                       }}
                       value={dataProfile?.birthDate}
                     ></MDBInput>
                   </MDBCol>
                 </MDBRow>
+                {errBirthDay && errBirthDay !== "err" ? (
+                  <p style={{ color: "red" }}>{errBirthDay}!!!</p>
+                ) : null}
                 <hr />
                 <MDBRow>
                   <MDBCol lg="2">
