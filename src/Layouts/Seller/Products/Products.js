@@ -396,7 +396,19 @@ function Products() {
                         <MDBBtn color='secondary' style={{height : "40px",  padding: "2px 15px"}} onClick={toggleShowAdd}>
                             Close
                         </MDBBtn>
-                        <MDBBtn style={{height : "40px", padding: "2px 15px"}} onClick={() => {handleAdd()}} >Save</MDBBtn>
+                        {data.name.length && data.description.length && data.idCategory.length && data.price.length && data.quantity.length && file ? 
+                        (
+                          <MDBBtn style={{height : "40px", padding: "2px 15px"}} 
+                          onClick={() => {handleAdd()}} >
+                           Save
+                        </MDBBtn>
+                        ) :
+                        (
+                          <MDBBtn style={{height : "40px", padding: "2px 15px"}} >
+                           Save
+                          </MDBBtn>
+                        )}
+                       
                         </MDBModalFooter>
                     </MDBModalContent>
                     </MDBModalDialog>
