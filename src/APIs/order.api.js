@@ -54,6 +54,9 @@ function getOrderTransport(setListOrderTransport) {
       return data.body;
     })
     .then((body) => {
+      body.sort((a, b) => {
+        return Date.parse(b.dateOrder) - Date.parse(a.dateOrder);
+      });
       setListOrderTransport(body);
     })
     .catch((err) => {
@@ -74,6 +77,9 @@ function getOrderReceived(setListOrderReceived) {
       return data.body;
     })
     .then((body) => {
+      body.sort((a, b) => {
+        return Date.parse(b.dateOrder) - Date.parse(a.dateOrder);
+      });
       setListOrderReceived(body);
     })
     .catch((err) => {
@@ -94,6 +100,9 @@ function getOrderOrdered(setListOrderOrdered) {
       return data.body;
     })
     .then((body) => {
+      body.sort((a, b) => {
+        return Date.parse(b.dateOrder) - Date.parse(a.dateOrder);
+      });
       setListOrderOrdered(body);
     })
     .catch((err) => {
@@ -120,7 +129,7 @@ function getInforOrder(Data, setListItem, navigate) {
         navigate("/cart");
       } else {
         setListItem(body);
-        console.log(body);
+        // console.log(body);
       }
     })
     .catch((err) => {
@@ -128,7 +137,7 @@ function getInforOrder(Data, setListItem, navigate) {
     });
 }
 
-function createOrder(Data, navigate) {
+function createOrder(Data, navigate, notify) {
   axios({
     method: "post",
     url: `${baseUrl}order/create-order`,
@@ -144,7 +153,8 @@ function createOrder(Data, navigate) {
     })
     .then((body) => {
       if (body?.length > 0) {
-        alert("Order successfully!");
+        // alert("Order successfully!");
+        notify("Order successfully!");
         navigate("/cart");
       } else {
         console.log(body);
@@ -218,7 +228,7 @@ function apiUpdateStatus(Data) {
     .then((res) => res.data.body)
     .then((data) => {
       window.location.reload();
-      console.log(data)
+      console.log(data);
     })
     .catch((err) => {
       console.log(err);
@@ -236,5 +246,5 @@ export {
   getSaleInforOrderOrdered,
   getSaleInforOrderTransport,
   getSaleInforOrderReceived,
-  apiUpdateStatus
+  apiUpdateStatus,
 };

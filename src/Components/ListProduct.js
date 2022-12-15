@@ -6,6 +6,7 @@ import {
   getAllProduct,
   searchProductByCategory,
 } from "../APIs/product.api";
+import { ToastContainer, toast } from "react-toastify";
 
 function ListProduct({ keyword }) {
   const itemEachPage = 6;
@@ -18,6 +19,7 @@ function ListProduct({ keyword }) {
   const [listEachProductPage, setListEachProductPage] = useState([]);
   const [listCategory, setListCategory] = useState([]);
   const [typeCategory, setTypeCategory] = useState(0);
+  const notify = (value) => toast(value);
 
   useEffect(() => {
     getAllCategory(setListCategory);
@@ -71,17 +73,23 @@ function ListProduct({ keyword }) {
   };
   const handleAddToCart = (productId, existType) => {
     if (existType.length > 0) {
-      addItemToCart({
-        productId: productId,
-        quantity: 1,
-        typeId: existType[0]?.id,
-      });
+      addItemToCart(
+        {
+          productId: productId,
+          quantity: 1,
+          typeId: existType[0]?.id,
+        },
+        notify
+      );
     } else {
-      addItemToCart({
-        productId: productId,
-        quantity: 1,
-        typeId: null,
-      });
+      addItemToCart(
+        {
+          productId: productId,
+          quantity: 1,
+          typeId: null,
+        },
+        notify
+      );
     }
   };
   const elemListProduct = listEachProductPage?.map((item, index) => {
@@ -154,7 +162,7 @@ function ListProduct({ keyword }) {
                 {item.productResponse.name}
               </a>
             </h2>
-            <span class="price">${item.productResponse.price}</span>
+            <span class="price">{item.productResponse.price}đ</span>
           </div>
         </div>
       </div>
@@ -495,6 +503,7 @@ function ListProduct({ keyword }) {
           </div>
         </div>
       </div>
+      {/* <ToastContainer /> */}
     </section>
   );
 }

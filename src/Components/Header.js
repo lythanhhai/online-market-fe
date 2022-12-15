@@ -39,7 +39,7 @@ function Header({ keyword, setKeyword }) {
   const [heightScroll, setHeightScroll] = useState(false);
   useEffect(() => {
     window.addEventListener("scroll", function () {
-      if (window.scrollY > 70) {
+      if (window.scrollY > 50) {
         setHeightScroll(true);
       } else {
         setHeightScroll(false);
@@ -76,15 +76,22 @@ function Header({ keyword, setKeyword }) {
           type="search"
           ref={inputSearch}
           style={{
-            height: "40px",
+            height: "45px",
             width: "40%",
             borderRadius: 30,
             // border: "none",
             outline: "none",
-            padding: "4px 10px 4px",
+            padding: "4px 15px 4px",
+            backgroundColor: "rgb(235, 235, 235)",
+            border: "none",
           }}
           onChange={(e) => {
             setKeyword(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              navigate("/home");
+            }
           }}
           placeholder="Enter name product which you want..."
         />

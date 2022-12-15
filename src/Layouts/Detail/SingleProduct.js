@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { addItemToCart } from "../../APIs/cart.api";
 import { getProductById } from "../../APIs/product.api";
+import { ToastContainer, toast } from "react-toastify";
 
 function SingleProduct() {
   const params = useParams();
@@ -11,6 +12,8 @@ function SingleProduct() {
     quantity: 1,
     typeId: null,
   });
+
+  const notify = (value) => toast(value);
   useEffect(() => {
     // alert(params.productId);
     getProductById(params.productId, setProduct);
@@ -27,13 +30,16 @@ function SingleProduct() {
 
   const handleAddToCart = (lengthType) => {
     if (lengthType.length > 0 && !Data.typeId) {
-      addItemToCart({
-        productId: parseInt(params.productId),
-        quantity: Data.quantity,
-        typeId: lengthType[0]?.id,
-      });
+      addItemToCart(
+        {
+          productId: parseInt(params.productId),
+          quantity: Data.quantity,
+          typeId: lengthType[0]?.id,
+        },
+        notify
+      );
     } else {
-      addItemToCart(Data);
+      addItemToCart(Data, notify);
     }
     // console.log(Data);
   };
@@ -169,8 +175,7 @@ function SingleProduct() {
                 <hr />
 
                 <h3 class="product-price">
-                  ${product.productResponse?.price}
-                  {/* <del>$119.90</del> */}
+                  {product.productResponse?.price}đ{/* <del>$119.90</del> */}
                 </h3>
 
                 {/* <p class="product-description my-4 ">
@@ -208,6 +213,7 @@ function SingleProduct() {
                       class="btn btn-main btn-small"
                       onClick={() => {
                         handleAddToCart(product.typeList);
+                        // notify();
                       }}
                     >
                       Add to cart
@@ -693,6 +699,7 @@ function SingleProduct() {
           </div>
         </div>
       </section> */}
+      {/* <ToastContainer /> */}
     </div>
   );
 }

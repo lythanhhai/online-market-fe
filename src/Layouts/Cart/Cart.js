@@ -8,8 +8,10 @@ import {
 } from "../../APIs/cart.api";
 import baseUrl from "../../APIs/config";
 import { getAllProduct, getProductById } from "../../APIs/product.api";
+import { ToastContainer, toast } from "react-toastify";
 
 function Cart({ setListItemChosen, listItemChosen }) {
+  const notify = (value) => toast(value);
   const [listCart, setListCart] = useState([]);
   const [listProduct, setListProduct] = useState([]);
   const [checked, setChecked] = useState(false);
@@ -53,7 +55,7 @@ function Cart({ setListItemChosen, listItemChosen }) {
   };
   const handleDeleteCart = (idItem) => {
     setAction(true);
-    deleteItemInCart(idItem);
+    deleteItemInCart(idItem, notify);
   };
   // useEffect(() => {
   //   console.log(listItemChosen);
@@ -69,6 +71,7 @@ function Cart({ setListItemChosen, listItemChosen }) {
           // flexDirection: "row",
           // // justifyContent: "center",
           alignItems: "center !important",
+          width: "100%",
         }}
       >
         <td>
@@ -94,14 +97,24 @@ function Cart({ setListItemChosen, listItemChosen }) {
           ></input>
         </td>
 
-        <td class="product-thumbnail" data-title="Thumbnail">
-          {/* <a href={`/detail-product/${item.product.id}`}>
+        <td
+          class="product-thumbnail"
+          data-title="Thumbnail"
+          style={{
+            width: "13%",
+          }}
+        >
+          <a href={`/detail-product/${item.product.id}`}>
             <img
-              src="assets/images/cart-1.jpg"
-              class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
-              alt=""
+              class="media-object img- mr-3"
+              src={
+                item.urlImgList.length > 0
+                  ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`
+                  : ""
+              }
+              alt="image"
             />
-          </a> */}
+          </a>
         </td>
 
         <td class="product-name" data-title="Product">
@@ -130,7 +143,7 @@ function Cart({ setListItemChosen, listItemChosen }) {
               //   max="9"
               title="Quantity"
               size="4"
-              defaultValue={item?.quantity}
+              value={item?.quantity}
               onChange={(e) => {
                 handleUpdateCart(
                   item?.id,

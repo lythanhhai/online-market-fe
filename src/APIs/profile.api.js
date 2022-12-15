@@ -7,7 +7,7 @@ import {
 } from "../Utils/storage";
 import baseUrl from "./config";
 
-function updateProfile(Data) {
+function updateProfile(Data, notify) {
   axios({
     method: "post",
     url: `${baseUrl}update-profile`,
@@ -18,6 +18,7 @@ function updateProfile(Data) {
   })
     .then((res) => res.data)
     .then((data) => {
+      notify("Update profile successfully!");
       console.log(data);
     })
     .catch((err) => {
