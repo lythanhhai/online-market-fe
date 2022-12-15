@@ -93,7 +93,7 @@ function Transport() {
                   <MDBCardText>{item.totalPrice}</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="1" style={{marginTop : "-5px", marginLeft : "-28px"}}>
-                  <button type="button" style={{padding: "2px 12px", fontSize:"15px"}} class="btn btn-dark " name="edit" disabled=""
+                  <button type="button" style={{padding: "2px 12px", fontSize:"15px",fontSize :"13px"}} class="btn btn-dark " name="edit" disabled=""
                    onClick={() => updateStatus(item.idOrder)}
                   >Received</button>
                 </MDBCol>

@@ -86,6 +86,28 @@ function apiUpdateProduct(Data) {
     });
 }
 
+function apiDeleteProduct(idProduct) {
+  axios({
+    method: "post",
+    url: `${baseUrl}product/delete-product/${idProduct}`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+      "Content-Type": "multipart/form-data",
+    },
+  })
+    .then((res) => res.data)
+    .then((data) => {
+      window.location.reload();
+      return data.body;
+    })
+    .then((body) => {
+      console.log(body);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 function getProductByShop(setProduct) {
   axios({
     method: "get",
@@ -164,5 +186,6 @@ export {
   getProductById,
   getProductByShop,
   apiCreateProduct,
-  apiUpdateProduct
+  apiUpdateProduct,
+  apiDeleteProduct
 };
