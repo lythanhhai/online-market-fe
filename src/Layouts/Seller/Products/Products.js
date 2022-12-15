@@ -22,7 +22,8 @@ import {
     getAllCategory,
     getProductByShop,
     apiCreateProduct,
-    apiUpdateProduct
+    apiUpdateProduct,
+    apiDeleteProduct
   } from "../../../APIs/product.api";
 
 function Products() {
@@ -108,6 +109,10 @@ function Products() {
       apiUpdateProduct(form_data)
     }
 
+    const handleDelete = (idProduct) =>{
+      apiDeleteProduct(idProduct)
+    }
+
     const elemCategory = listCategory.map((item, index) => {
       return (
         <option value={item.id} key={item.id}>
@@ -128,7 +133,7 @@ function Products() {
     <div className="p-4 block">
         <div className="d-flex">
           <h4>Products</h4>
-          <button type="button" class="btn btn-dark btn-small" style={{marginLeft : "80%", padding: "1px 20px"}} name="add_product" disabled="" onClick={toggleShowAdd}>Add product</button>
+          <button type="button" class="btn btn-dark " style={{marginLeft : "80%", padding: "1px 20px", fontSize :"13px"}} name="add_product" disabled="" onClick={toggleShowAdd}>Add product</button>
         </div>
         <MDBCol className="mt-4" style={{marginLeft : "-15px"}}>
             <MDBCard className="mb-4">
@@ -146,7 +151,7 @@ function Products() {
                     <i class="fas fa-search"></i>
                     </span>
                 </form>
-                </div>
+              </div>
                 <MDBRow className="mt-4 ml-1">
                   <MDBCol sm="1">
                     <MDBCardText></MDBCardText>
@@ -160,7 +165,7 @@ function Products() {
                   <MDBCol sm="1">
                     <MDBCardText>Category</MDBCardText>
                   </MDBCol>
-                  <MDBCol sm="2">
+                  <MDBCol sm="1">
                     <MDBCardText>Type</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="1">
@@ -176,7 +181,7 @@ function Products() {
                     <MDBCardImage
                         src={`https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`}
                         alt="avatar"
-                        className=" ml-4"
+                        className=""
                         style={{ width: "50px" }}
                         fluid
                     />
@@ -190,7 +195,7 @@ function Products() {
                   <MDBCol sm="1">
                     <MDBCardText>{item.productResponse.category.name}</MDBCardText>
                   </MDBCol>
-                  <MDBCol sm="2">
+                  <MDBCol sm="1">
                     <MDBCardText>{item.typeList[0].name} - {item.typeList[0].size} -{item.typeList[0].color} </MDBCardText>
                   </MDBCol>
                   <MDBCol sm="1">
@@ -201,7 +206,7 @@ function Products() {
                   </MDBCol>
                   <MDBCol sm="1">
                     <button type="button" class="btn btn-dark btn-small" name="edit" disabled=""
-                     style={{ padding: "1px 20px"}}
+                     style={{ padding: "1px 20px ", fontSize :"13px"}}
                      onClick={() => {
                       toggleShowEdit();
                       setDataUpdate({
@@ -222,6 +227,12 @@ function Products() {
                     }}>
                     Edit</button>
                   </MDBCol>
+                  <MDBCol sm="1">
+                    <button type="button" class="btn btn-dark btn-small" name="edit" disabled=""
+                     style={{ padding: "1px 15px ", fontSize :"13px"}} onClick={() => handleDelete(item.productResponse.id)}>
+                      Delete
+                     </button>
+                  </MDBCol>
                 </MDBRow>
                 ))}
                 <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
@@ -239,6 +250,7 @@ function Products() {
                             <MDBCol sm="10">
                               <MDBInput
                                 placeholder="Short T-shirt"
+                                maxLength="120"
                                 onChange={(e) => {
                                   setData({
                                     ...data,
@@ -551,10 +563,10 @@ function Products() {
                           </MDBRow>
                         </MDBModalBody>
                         <MDBModalFooter>
-                        <MDBBtn color='secondary' style={{height : "40px" ,  padding: "2px 15px"}} onClick={toggleShowEdit}>
+                        <MDBBtn color='secondary' style={{height : "40px" ,  padding: "2px 15px", fontSize :"13px"}} onClick={toggleShowEdit}>
                             Close
                         </MDBBtn>
-                        <MDBBtn style={{height : "40px" ,  padding: "2px 15px"}} onClick={() => {handleUpdate()}}>Save</MDBBtn>
+                        <MDBBtn style={{height : "40px" ,  padding: "2px 15px" , fontSize :"13px"}} onClick={() => {handleUpdate()}}>Save</MDBBtn>
                         </MDBModalFooter>
                     </MDBModalContent>
                     </MDBModalDialog>
