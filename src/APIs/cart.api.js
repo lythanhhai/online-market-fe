@@ -62,7 +62,7 @@ function getItemOrder(idOrder) {
     });
 }
 
-function addItemToCart(Data) {
+function addItemToCart(Data, notify) {
   axios({
     method: "post",
     url: `${baseUrl}cart/add-item`,
@@ -74,6 +74,7 @@ function addItemToCart(Data) {
     .then((res) => res.data)
     .then((data) => {
       console.log(data);
+      notify("Add this item successfully!");
     })
     .catch((err) => {
       console.log(err);
@@ -98,7 +99,7 @@ function updateItemInCart(Data) {
     });
 }
 
-function deleteItemInCart(idItem) {
+function deleteItemInCart(idItem, notify) {
   // console.log(getLocalStorage(STORAGE.USER_TOKEN).split(".")[2]);
   axios({
     method: "delete",
@@ -111,6 +112,7 @@ function deleteItemInCart(idItem) {
       return res.data;
     })
     .then((data) => {
+      notify("Remove this item successfully!");
       console.log(data);
     })
     .catch((err) => {

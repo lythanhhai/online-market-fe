@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteItemInCart, getItem } from "../APIs/cart.api";
+import { ToastContainer, toast } from "react-toastify";
 
 function ModalCart({ listCart, totalPrice }) {
+  const notify = (value) => toast(value);
   const handleDeleteItemInCart = (idItem) => {
-    deleteItemInCart(idItem);
+    deleteItemInCart(idItem, notify);
   };
   const navigate = useNavigate();
   const handleClickDetailProduct = (idProduct) => {
     navigate(`/detail-product/${idProduct}`);
   };
-
   const elemItem = listCart.map((item, index) => {
     return (
       <div class="media" key={index}>
-        {/* <a href={`/detail-product/${item.product.id}`}>
+        <a href={`/detail-product/${item.product.id}`}>
           <img
             class="media-object img- mr-3"
             src={
               item.urlImgList.length > 0
                 ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item.urlImgList[0].url}`
-                : "assets/images/cart-1.jpg"
+                : ""
             }
             alt="image"
           />
-        </a> */}
+        </a>
         <div class="media-body">
           <a href={`/detail-product/${item.product.id}`}>
             <h6>{item.product.name}</h6>
@@ -68,7 +69,7 @@ function ModalCart({ listCart, totalPrice }) {
         {listCart.length === 0 ? null : (
           <div>
             <span class="h6">Total</span>
-            <span class="total-price h6">đ{totalPrice}</span>
+            <span class="total-price h6">{totalPrice}đ</span>
           </div>
         )}
 

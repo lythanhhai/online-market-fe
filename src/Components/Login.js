@@ -1,16 +1,67 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../APIs/auth.api";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
+// Material Dashboard 2 React components
+import { MDBRow } from "mdb-react-ui-kit";
 function Login() {
   const [data, setData] = useState({
     username: "",
     password: "",
   });
   const [err, setErr] = useState("");
+  const [errData, setErrData] = useState({
+    errUsername: "err",
+    errPassword: "err",
+    errCommon: "",
+  });
+  const validateUsername = (value) => {
+    if (value === "") {
+      setErrData({
+        ...errData,
+        errUsername: "Username is required",
+      });
+    } else {
+      setErrData({
+        ...errData,
+        errUsername: "",
+      });
+    }
+  };
+  const validatePassword = (value) => {
+    if (value === "") {
+      setErrData({
+        ...errData,
+        errPassword: "Password is required",
+      });
+    } else {
+      setErrData({
+        ...errData,
+        errPassword: "",
+      });
+    }
+  };
+
+  const [position, setPosition] = useState(0);
+  useEffect(() => {
+    localStorage.setItem("POSITION", position);
+  }, [position]);
+
   const navigate = useNavigate();
   const handleSignIn = () => {
-    login(data, navigate, setErr);
+    if (!errData.errUsername && !errData.errPassword) {
+      setErrData({
+        ...errData,
+        errCommon: "",
+      });
+      login(data, navigate, setErr);
+    } else {
+      setErrData({
+        ...errData,
+        errCommon: "You must enter correct and full information",
+      });
+    }
   };
   return (
     <div className="login-container">
@@ -39,9 +90,13 @@ function Login() {
                           ...data,
                           username: e.target.value,
                         });
+                        validateUsername(e.target.value);
                       }}
                     />
                   </div>
+                  {errData.errUsername && errData.errUsername !== "err" ? (
+                    <p style={{ color: "red" }}>{errData.errUsername}!!!</p>
+                  ) : null}
                   <div class="form-group">
                     <label for="#">Enter Password</label>
                     <a class="float-right" href="">
@@ -56,11 +111,41 @@ function Login() {
                           ...data,
                           password: e.target.value,
                         });
+                        validatePassword(e.target.value);
                       }}
                     />
                   </div>
-                  {err ? <p style={{ color: "red" }}>{err}!!!</p> : null}
+                  {errData.errPassword && errData.errPassword !== "err" ? (
+                    <p style={{ color: "red" }}>{errData.errPassword}!!!</p>
+                  ) : null}
 
+                  <MDBRow>
+                    <FormControl fullWidth style={{ padding: "5px 13px" }}>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        style={{ marginLeft: "15px" }}
+                      >
+                        Position
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={position}
+                        label="Position"
+                        sx={{ height: "45px" }}
+                        onChange={(e) => {
+                          setPosition(e.target.value);
+                        }}
+                      >
+                        <MenuItem value={0}>User</MenuItem>
+                        <MenuItem value={1}>Seller</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </MDBRow>
+                  {errData.errCommon ? (
+                    <p style={{ color: "red" }}>{errData.errCommon}!!!</p>
+                  ) : null}
+                  {err ? <p style={{ color: "red" }}>{err}!!!</p> : null}
                   <a
                     class="btn btn-main mt-3 btn-block"
                     style={{

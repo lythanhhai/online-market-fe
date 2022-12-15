@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createOrder, getInforOrder, getPayment } from "../../APIs/order.api";
 import { getAddressOrder } from "../../APIs/profile.api";
+import { ToastContainer, toast } from "react-toastify";
 
 function Checkout({ listItemChosen }) {
   const [listMethod, setListMethod] = useState([]);
   const [listItem, setListItem] = useState([]);
+  const [listItemAfter, setListItemAfter] = useState({});
   const [dataOrder, setDataOrder] = useState({
     idPayment: 1,
     listIdItem: listItemChosen,
     province: "",
     address: "",
   });
+  const notify = (value) => toast(value);
   const [fillInfor, setFillInfor] = useState({});
   const [isClickContinue, setIsClickContinue] = useState(false);
   useEffect(() => {
@@ -19,18 +22,74 @@ function Checkout({ listItemChosen }) {
     getAddressOrder(setFillInfor);
     // console.log(listItemChosen);
   }, []);
-  // useEffect(() => {
-  //   setDataOrder({
-  //     ...dataOrder,
-  //     province: fillInfor.district?.province.province_name,
-  //     address: fillInfor?.address + ", " + fillInfor.district?.district_name,
-  //   });
-  // }, [fillInfor]);
+  const [errData, setErrData] = useState({
+    errStreet: "err",
+    errProvince: "err",
+    errCommon: "",
+  });
+  const validateStreet = (value) => {
+    if (value === "") {
+      setErrData({
+        ...errData,
+        errStreet: "Street is required",
+      });
+    } else {
+      setErrData({
+        ...errData,
+        errStreet: "",
+      });
+    }
+  };
+  const validateProvince = (value) => {
+    if (value === "") {
+      setErrData({
+        ...errData,
+        errProvince: "Province is required",
+      });
+    } else {
+      setErrData({
+        ...errData,
+        errProvince: "",
+      });
+    }
+  };
+  useEffect(() => {
+    setDataOrder({
+      ...dataOrder,
+      province: fillInfor.district?.province.province_name,
+      address: fillInfor?.address + ", " + fillInfor.district?.district_name,
+    });
+  }, [fillInfor]);
   const navigate = useNavigate();
   const handleGetInforOrder = () => {
-    // console.log(dataOrder);
-    getInforOrder(dataOrder, setListItem, navigate);
+    if (dataOrder.address && dataOrder.province) {
+      setErrData({
+        ...errData,
+        errCommon: "",
+      });
+      setIsClickContinue(true);
+      getInforOrder(dataOrder, setListItem, navigate);
+    } else {
+      setErrData({
+        ...errData,
+        errCommon: "You must enter full province and street information",
+      });
+    }
   };
+  useEffect(() => {
+    let objectRes = {
+      totalPrice: 0,
+      products: [],
+    };
+
+    listItem.forEach((item, index) => {
+      objectRes.totalPrice += item.totalPrice;
+      for (let i = 0; i < item.products.length; i++) {
+        objectRes.products.push(item.products[i]);
+      }
+    });
+    setListItemAfter(objectRes);
+  }, [listItem]);
   const handleOrder = () => {
     let data = {
       idPayment: 1,
@@ -40,12 +99,12 @@ function Checkout({ listItemChosen }) {
       // province: "1",
       // address: "1",
     };
-    // console.log(data);
+    // console.log(dataOrder);
     // console.log(fillInfor.district.province.province_name);
-    createOrder(dataOrder, navigate);
+    createOrder(dataOrder, navigate, notify);
   };
 
-  const elemListItemInCart = listItem[0]?.products.map((item, index) => {
+  const elemListItemInCart = listItemAfter.products?.map((item, index) => {
     // console.log(item);
     return (
       <tr
@@ -138,8 +197,21 @@ function Checkout({ listItemChosen }) {
                                   ...dataOrder,
                                   address: e.target.value,
                                 });
+                                validateStreet(e.target.value);
                               }}
                             />
+                            {errData.errStreet &&
+                            errData.errStreet !== "err" ? (
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginTop: 2,
+                                  marginBottom: -5,
+                                }}
+                              >
+                                {errData.errStreet}!!!
+                              </p>
+                            ) : null}
                           </div>
                         </div>
 
@@ -157,8 +229,33 @@ function Checkout({ listItemChosen }) {
                                   ...dataOrder,
                                   province: e.target.value,
                                 });
+                                validateProvince(e.target.value);
                               }}
                             />
+                            {errData.errProvince &&
+                            errData.errProvince !== "err" ? (
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginTop: 2,
+                                  marginBottom: 2,
+                                }}
+                              >
+                                {errData.errProvince}!!!
+                              </p>
+                            ) : null}
+                            {errData.errCommon &&
+                            errData.errCommon !== "err" ? (
+                              <p
+                                style={{
+                                  color: "red",
+                                  marginBottom: 2,
+                                  marginTop: 2,
+                                }}
+                              >
+                                {errData.errCommon}!!!
+                              </p>
+                            ) : null}
                           </div>
                         </div>
 
@@ -305,7 +402,6 @@ function Checkout({ listItemChosen }) {
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        setIsClickContinue(true);
                         handleGetInforOrder();
                       }}
                     >
@@ -349,7 +445,7 @@ function Checkout({ listItemChosen }) {
                 <ul class="list-unstyled mb-4">
                   <li class="d-flex align-items-start py-2">
                     <p class="mr-3">Subtotal:</p>
-                    <p>đ{listItem[0]?.totalPrice}</p>
+                    <p>{listItemAfter?.totalPrice}đ</p>
                   </li>
                   <li class="d-flex align-items-start py-2">
                     <p class="mr-3">Shipping:</p>
@@ -357,7 +453,7 @@ function Checkout({ listItemChosen }) {
                   </li>
                   <li class="d-flex align-items-start py-2">
                     <p class="mr-3">Total:</p>
-                    <p>đ{listItem[0]?.totalPrice}</p>
+                    <p>{listItemAfter?.totalPrice}đ</p>
                   </li>
                 </ul>
               </div>
@@ -469,6 +565,7 @@ function Checkout({ listItemChosen }) {
           </div>
         </div>
       </div>
+      {/* <ToastContainer /> */}
     </div>
   );
 }

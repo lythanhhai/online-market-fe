@@ -13,6 +13,7 @@ function ListOrder({ listProduct, name }) {
     });
     setList(arr);
   }, []);
+
   const elemListItemInCart = list?.map((item1, index) => {
     // if (item.products?.length === 0) {
     //   return null;
@@ -29,9 +30,9 @@ function ListOrder({ listProduct, name }) {
           <img
             class="img-fluid w-100 mb-3 img-first"
             src={
-              item1.urlImgList?.length > 0
-                ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item1.urlImgList[0]?.url}`
-                : "assets/images/322.jpg"
+              item1.url
+                ? `https://res.cloudinary.com/dpnhk5kup/image/upload/${item1.url}`
+                : ""
             }
             alt="product-img"
           />

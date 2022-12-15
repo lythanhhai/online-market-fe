@@ -54,6 +54,9 @@ function getOrderTransport(setListOrderTransport) {
       return data.body;
     })
     .then((body) => {
+      body.sort((a, b) => {
+        return Date.parse(b.dateOrder) - Date.parse(a.dateOrder);
+      });
       setListOrderTransport(body);
     })
     .catch((err) => {
@@ -74,6 +77,9 @@ function getOrderReceived(setListOrderReceived) {
       return data.body;
     })
     .then((body) => {
+      body.sort((a, b) => {
+        return Date.parse(b.dateOrder) - Date.parse(a.dateOrder);
+      });
       setListOrderReceived(body);
     })
     .catch((err) => {
@@ -94,6 +100,9 @@ function getOrderOrdered(setListOrderOrdered) {
       return data.body;
     })
     .then((body) => {
+      body.sort((a, b) => {
+        return Date.parse(b.dateOrder) - Date.parse(a.dateOrder);
+      });
       setListOrderOrdered(body);
     })
     .catch((err) => {
@@ -120,7 +129,7 @@ function getInforOrder(Data, setListItem, navigate) {
         navigate("/cart");
       } else {
         setListItem(body);
-        console.log(body);
+        // console.log(body);
       }
     })
     .catch((err) => {
@@ -128,7 +137,7 @@ function getInforOrder(Data, setListItem, navigate) {
     });
 }
 
-function createOrder(Data, navigate) {
+function createOrder(Data, navigate, notify) {
   axios({
     method: "post",
     url: `${baseUrl}order/create-order`,
@@ -144,11 +153,82 @@ function createOrder(Data, navigate) {
     })
     .then((body) => {
       if (body?.length > 0) {
-        alert("Order successfully!");
+        // alert("Order successfully!");
+        notify("Order successfully!");
         navigate("/cart");
       } else {
         console.log(body);
       }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getSaleInforOrderOrdered(setInforOrderOrdered) {
+  axios({
+    method: "get",
+    url: `${baseUrl}sale/get-info-order-ordered`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      setInforOrderOrdered(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getSaleInforOrderTransport(setInforOrderTransport) {
+  axios({
+    method: "get",
+    url: `${baseUrl}sale/get-info-order-transport`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      setInforOrderTransport(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getSaleInforOrderReceived(setInforOrderReceived) {
+  axios({
+    method: "get",
+    url: `${baseUrl}sale/get-info-order-received`,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      setInforOrderReceived(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function apiUpdateStatus(Data) {
+  axios({
+    method: "post",
+    url: `${baseUrl}sale/update-status`,
+    data: Data,
+    headers: {
+      Authorization: `${getLocalStorage(STORAGE.USER_TOKEN)}`,
+    },
+  })
+    .then((res) => res.data.body)
+    .then((data) => {
+      window.location.reload();
+      console.log(data);
     })
     .catch((err) => {
       console.log(err);
@@ -163,4 +243,8 @@ export {
   getOrderOrdered,
   getOrderReceived,
   getOrderTransport,
+  getSaleInforOrderOrdered,
+  getSaleInforOrderTransport,
+  getSaleInforOrderReceived,
+  apiUpdateStatus,
 };

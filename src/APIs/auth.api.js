@@ -21,7 +21,11 @@ function login(Data, navigate, setErr) {
         setLocalStorage(STORAGE.USER_DATA, JSON.stringify(data));
         setLocalStorage(STORAGE.USER_TOKEN, data.accessToken);
         setLocalStorage("EXPIRE", JSON.stringify(new Date()));
-        navigate("/home");
+        if(localStorage.getItem("POSITION") === '0'){
+          navigate("/home");
+        }else{
+          navigate("/seller");
+        }
         window.location.reload(false);
       }
     })
